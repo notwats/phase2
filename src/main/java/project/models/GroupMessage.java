@@ -1,6 +1,7 @@
 package project.models;
 
-import project.database.*;
+import project.database.DBGetter;
+import project.database.UpdateDB;
 
 import java.util.Date;
 

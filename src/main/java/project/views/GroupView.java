@@ -13,7 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-import project.WelcomeView;
 import project.database.DBGetter;
 import project.models.Group;
 import project.models.GroupMessage;
