@@ -5,10 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import project.models.User;
 
 import java.io.IOException;
 
 public class SceneController {
+    public static User loggedInUser = null;
+
 //    public ObservableList<Course> getC() {
 //        ObservableList<Course> mylist = FXCollections.observableArrayList();
 //        mylist.addAll(Course.courses);

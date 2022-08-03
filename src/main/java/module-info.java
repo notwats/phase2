@@ -7,6 +7,8 @@ module project {
 
     opens project to javafx.fxml;
     exports project;
-    exports project.views;
-    opens project.views to javafx.fxml;
+    exports project.views.chats;
+    opens project.views.chats to javafx.fxml;
+    exports project.views.welcome;
+    opens project.views.welcome to javafx.fxml;
 }

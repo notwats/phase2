@@ -2,7 +2,8 @@ package project;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import project.views.GroupView;
+import project.views.chats.GroupView;
+import project.views.welcome.WelcomeView;
 
 import java.io.IOException;
 import java.net.URL;

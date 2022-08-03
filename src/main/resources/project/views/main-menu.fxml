@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="70.0" prefWidth="700.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="175.0" text="Button" />
+            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="175.0" text="Button" />
+            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="175.0" text="Button" />
+            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="175.0" text="Button" />
+         </children>
+      </HBox>
+   </children>
+</FlowPane>

@@ -10,12 +10,17 @@ public abstract class User {
     String username;
     String userID;
     private String password;
-    ArrayList<Integer> followersID;
-    ArrayList<Integer> followingsID;
-    ArrayList<Integer> postsID;
-    ArrayList<Integer> chatsID;
-    ArrayList<Integer> groupsID;
-    ArrayList<Integer> suggestionsID;
+    String securityAnswer;
+    Integer securityQuestion;
+    Boolean isNormal ; // actually boolean
+
+    ArrayList<Integer> followersID= new ArrayList<>();
+    ArrayList<Integer> followingsID= new ArrayList<>();
+    ArrayList<Post> posts= new ArrayList<>();
+    ArrayList<Integer> chatsID= new ArrayList<>();
+    ArrayList<Integer> groupsID= new ArrayList<>();
+    ArrayList<Integer> suggestionsID; // ???
+    ArrayList<Integer> blockedUsersID;
 
     public ArrayList<Integer> getSuggestionsID() {
         return suggestionsID;
@@ -29,16 +34,11 @@ public abstract class User {
 
     String Bio;
 
-    String securityAnswer;
-    Integer securityQuestion;
-
-    Boolean isNormal ; // actually boolean
-
-    private static int mainID = 0;
+//    private static int mainID = 0;
 
     public User(String userID, String username, String password, String securityAnswer, Integer securityQuestion) {
 
-       // this.id = mainID++;
+        // this.id = mainID++;
         this.userID = userID;
         this.username = username;
         this.password = password;
@@ -73,6 +73,22 @@ public abstract class User {
 
     public void follow(int followingID) {
         //add id to database;
+    }
+
+    public ArrayList<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(ArrayList<Post> posts) {
+        this.posts = posts;
+    }
+
+    public ArrayList<Integer> getBlockedUsersID() {
+        return blockedUsersID;
+    }
+
+    public void setBlockedUsersID(ArrayList<Integer> blockedUsersID) {
+        this.blockedUsersID = blockedUsersID;
     }
 
     public void liking(int postID) {
@@ -156,10 +172,6 @@ public abstract class User {
         return followingsID;
     }
 
-    public ArrayList<Integer> getPostsID() {
-        return postsID;
-    }
-
     public ArrayList<Integer> getChatsID() {
         return chatsID;
     }
@@ -184,9 +196,6 @@ public abstract class User {
         return securityQuestion;
     }
 
-    public static int getMainID() {
-        return mainID;
-    }
 
     public void setId(int id) {
         this.numberID = id;
@@ -206,10 +215,6 @@ public abstract class User {
 
     public void setFollowingsID(ArrayList<Integer> followingsID) {
         this.followingsID = followingsID;
-    }
-
-    public void setPostsID(ArrayList<Integer> postsID) {
-        this.postsID = postsID;
     }
 
     public void setChatsID(ArrayList<Integer> chatsID) {
@@ -234,10 +239,6 @@ public abstract class User {
 
     public void setSecurityQuestion(Integer securityQuestion) {
         this.securityQuestion = securityQuestion;
-    }
-
-    public static void setMainID(int mainID) {
-        User.mainID = mainID;
     }
 
     @Override

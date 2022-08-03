@@ -1,0 +1,30 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+
+
+.root{
+    -fx-background-color: #050723;
+}
+.scroll-pane{
+    -fx-background-color: #050723;
+}
+
+VBox{
+    -fx-background-color: #050723;
+    -fx-border-color: #53d5e6;
+}
+
+Button{
+    -fx-background-color: #050723;
+    -fx-border-color: #7ed9e7;
+    -fx-text-fill: #7ed9e7;
+    -fx-font-size: 12px;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.75em;
+    font-size: 16px;
+    background-color: #222;
+    color: #aaa;
+}
+
