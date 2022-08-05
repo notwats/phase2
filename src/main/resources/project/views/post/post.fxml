@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.views.post.PostView">
+   <center>
+      <AnchorPane fx:id="imagePane" prefHeight="244.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="postImage" fitHeight="306.0" fitWidth="400.0" layoutX="3.0" layoutY="-4.0" onMouseClicked="#showPost" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="35.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="adPost" alignment="CENTER" layoutY="5.0" prefHeight="27.0" prefWidth="400.0" AnchorPane.topAnchor="5.0" />
+         </children>
+      </AnchorPane>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="57.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="48.0" fitWidth="56.0" layoutY="3.0" onMouseClicked="#likeButton" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Images/ic_love_.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="caption" layoutX="172.0" layoutY="1.0" prefHeight="54.0" prefWidth="340.0" text="caption:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

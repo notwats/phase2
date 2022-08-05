@@ -1,22 +1,29 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
 
 
-.root{
-    -fx-background-color: #050723;
-}
-.scroll-pane{
+.root {
     -fx-background-color: #050723;
 }
 
-VBox{
+.scroll-pane {
+    -fx-background-color: #050723;
+}
+
+VBox {
     -fx-background-color: #050723;
     -fx-border-color: #53d5e6;
 }
 
-Button{
-    -fx-background-color: #050723;
+Button {
+    -fx-background-color: #1b0d6a;
     -fx-border-color: #7ed9e7;
     -fx-text-fill: #7ed9e7;
+    -fx-font-size: 20px;
+    -fx-arc-height:50 ;
+    -fx-arc-width: 50;
+}
+
+#uploadButton {
     -fx-font-size: 12px;
 }
 
@@ -28,3 +35,14 @@ body {
     color: #aaa;
 }
 
+.post-background {
+    -fx-background-color: #fff;
+    -fx-background-radius: 15;
+    -fx-effect: dropShadow(three-pass-box, rgba(0, 0, 0, 0.1), 5.0, 0.0, 0.0, 5.0);
+}
+
+.label {
+    -fx-background-color: #050723;
+    -fx-text-fill: #7ed9e7;
+    -fx-font-size: 18px;
+}

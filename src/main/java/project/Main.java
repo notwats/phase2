@@ -5,12 +5,15 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import project.views.chats.GroupView;
+import project.database.DBGetter;
+import project.views.post.NewPost;
+import project.views.profile.MainProfileView;
 import project.views.welcome.WelcomeView;
 
 import java.io.IOException;
 
 import static project.Config.*;
+import static project.SceneController.loggedInUser;
 
 public class Main extends Application {
         public static Stage stage;
@@ -31,9 +34,8 @@ public class Main extends Application {
                 stage.setScene(scene);
                 stage.setTitle("NotWot");
                 stage.show();
-
-                WelcomeView.run();
-
+              //  WelcomeView.run();
+                loggedInUser= DBGetter.findUserByUserID("ghlmu");
+                NewPost.run();
         }
-
 }

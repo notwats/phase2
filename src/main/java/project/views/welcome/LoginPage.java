@@ -10,6 +10,7 @@ import project.controllers.WelcomeController;
 import project.database.DBGetter;
 import project.enums.Message;
 import project.views.chats.GroupView;
+import project.views.post.NewPost;
 import project.views.profile.MainProfileView;
 
 import java.io.IOException;
@@ -18,6 +19,14 @@ import java.net.URL;
 import static project.Main.stage;
 
 public class LoginPage extends SceneController {
+
+    public static void run() throws IOException {
+        URL fxmlAddress = WelcomeView.class.getResource("login-page.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlAddress);
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
+    }
 
     @FXML
     Label error;
@@ -32,13 +41,6 @@ public class LoginPage extends SceneController {
     Label status;
 
 
-    public static void run() throws IOException {
-        URL fxmlAddress = WelcomeView.class.getResource("login-page.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlAddress);
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
-    }
 
     public void login(ActionEvent event) throws IOException {
         Message message = WelcomeController.getInstance().handleLogin(usernameField.getText(), passwordField.getText());
@@ -47,7 +49,8 @@ public class LoginPage extends SceneController {
             System.out.println("Logged in successfully");
             loggedInUser = DBGetter.findUserByUserID(usernameField.getText());
             //  Controller.setLoggedInUser(DBGetter.findUserByUserID(userID));
-            MainProfileView.run(); //aval mire to mainmenu safhe profile
+            NewPost.run(); //aval mire to mainmenu safhe profile
+          //  GroupView.run();
         } else {
             error.setText(String.valueOf(message));
         }

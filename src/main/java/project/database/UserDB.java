@@ -22,7 +22,7 @@ public class UserDB {
                     ",'" + user.getUsername() + "','" + user.getPassword() + "','" +
                     user.getCreateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
                     "','" + user.getSecurityAnswer() + "'," + user.getSecurityQuestion() + ","
-                    + ((user.getIsNormal()) ? "1" : "0") + ")";
+                    + ((user.getIsNormal()) ? "1" : "0") +",'"+user.getProfileImage() +"')";
             // System.out.println(query);
             con.createStatement().execute(query);
             con.close();
@@ -37,7 +37,7 @@ public class UserDB {
             Connection con = getConnection();
             String query = "update `user` set user_id = '" + user.getUserID() +
                     "', username = '"+ user.getUsername()+
-                    "', password = '" + user.getPassword()+
+                    "', password = '" + user.getPassword()+"','"+user.getProfileImage() +
 //                    "', type = " +
 //                    ((user.getIsNormal()) ? "1" : "0")+
                     "';";
@@ -54,6 +54,7 @@ public class UserDB {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
             st.execute("delete from `user` where user_id = '" + user.getUserID()+"';");
+            st.execute("delete from `post` where sender_id = '" + user.getUserID()+"';");
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,11 +66,12 @@ public class UserDB {
         try {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
-            String query = "select * form followership where is_following_id = " + userID + ";" ;
+            String query = "select * from followship where is_following_id = " + userID + ";" ;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 following.add(rs.getInt(2));
             }
+            con.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -85,11 +87,12 @@ public class UserDB {
         try {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
-            String query = "select * form followership where is_followed_id = " + userID + ";" ;
+            String query = "select * from followship where is_followed_id = " + userID + ";" ;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 followers.add(rs.getInt(1));
             }
+            con.close();
         }
         catch (SQLException e) {
             e.printStackTrace();

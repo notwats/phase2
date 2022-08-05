@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static project.Config.css;
 import static project.Config.theme;
 import static project.Main.stage;
 
@@ -46,7 +47,6 @@ public class GroupView {
         URL fxmlAddress = GroupView.class.getResource("group-view.fxml");
         Parent pane = FXMLLoader.load(fxmlAddress);
         Scene scene = new Scene(pane);
-        String css = Main.class.getResource( theme+".css").toExternalForm();
         scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
