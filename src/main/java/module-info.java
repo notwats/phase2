@@ -16,5 +16,7 @@ module project {
     opens project.views.post to javafx.fxml;
     exports project.views.profile;
     opens project.views.profile to javafx.fxml;
+    exports project.views;
+    opens project.views to javafx.fxml;
 
 }

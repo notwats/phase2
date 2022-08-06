@@ -19,6 +19,51 @@ import java.util.Date;
 
 public class PostDB extends DBGetter {
 
+    public static Post getPostByPostID(Integer post_id) {
+        Post ps = new Post();
+        try {
+            Connection connection = DBInfo.getConnection();
+            Statement statement = connection.createStatement();
+
+            ResultSet rs = statement.executeQuery("SELECT * FROM post WHERE post_id = " + post_id);
+            if (!rs.next()) {
+                return null;
+            }
+            ps.setPostID(rs.getInt("post_id"));
+            ps.setSenderid(rs.getInt(2));
+            //  ps.setRepliedPost(getPostbyPostID(rs.getLong(5)));
+            ps.setContext(rs.getString(3));
+            ps.setIsNormal(rs.getBoolean(5));
+
+            ps.setLikedUsersid(getLikedUsersID(ps.getPostID()));
+            ps.setLikesDate(getLikesDate(ps.getPostID()));
+            ps.setCommentsid(getCommentsIDByPostID(ps.getPostID()));
+            ps.setViewsDate(getViewsDate(ps.getPostID()));
+            ps.setImageAddress(rs.getString("media"));
+
+            //           ps.setCreationDate(LocalDateTime.parse(rs.getString("creation_time")));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ps;
+    }
+
+    public static void addPost(Post post) {
+        // have to include time of sending the message too
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            Connection con = DBInfo.getConnection();
+            Statement st = con.createStatement();
+            st.execute("INSERT INTO post( sender_id, text, creation_time, type , media )  VALUES( "
+                    + post.getSenderid() + ",'" + post.getContext()
+                    + "','" + now.format(dtf) + "'," + ((post.getIsNormal()) ? "1" : "0") +",'"+post.getImageAddress() +"')");
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static ArrayList<Post> getFollowingsPost(Integer userID) {
         ArrayList<Post> ret = new ArrayList<>();
@@ -42,21 +87,6 @@ public class PostDB extends DBGetter {
     }
 
 
-    public static void addPost(Post post) {
-        // have to include time of sending the message too
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        try {
-            Connection con = DBInfo.getConnection();
-            Statement st = con.createStatement();
-            st.execute("INSERT INTO post( sender_id, text, creation_time, type )  VALUES( "
-                    + post.getSenderid() + ",'" + post.getContext()
-                    + "','" + now.format(dtf) + "'," + ((post.getIsNormal()) ? "1" : "0") + ")");
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static ArrayList<Post> getPostByUserID(Integer sender_id) {
         ArrayList<Post> ret = new ArrayList<>();
@@ -70,8 +100,7 @@ public class PostDB extends DBGetter {
                 Post ps = getPostByPostID(rs.getInt("post_id"));
 
 
-
-                    ret.add(ps);
+                ret.add(ps);
             }
             con.close();
         } catch (SQLException e) {
@@ -122,34 +151,6 @@ public class PostDB extends DBGetter {
         return cc;
     }
 
-
-    public static Post getPostByPostID(Integer post_id) {
-        Post ps = new Post();
-        try {
-            Connection connection = DBInfo.getConnection();
-            Statement statement = connection.createStatement();
-
-            ResultSet rs = statement.executeQuery("SELECT * FROM post WHERE post_id = " + post_id);
-            if (!rs.next()) {
-                return null;
-            }
-            ps.setPostID(rs.getInt("post_id"));
-            ps.setSenderid(rs.getInt(2));
-            //  ps.setRepliedPost(getPostbyPostID(rs.getLong(5)));
-
-            ps.setLikedUsersid(getLikedUsersID(ps.getPostID()));
-            ps.setLikesDate(getLikesDate(ps.getPostID()));
-            ps.setCommentsid(getCommentsIDByPostID(ps.getPostID()));
-            ps.setViewsDate(getViewsDate(ps.getPostID()));
-                ps.setImageAddress(rs.getString("media"));
-
-            //           ps.setCreationDate(LocalDateTime.parse(rs.getString("creation_time")));
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ps;
-    }
 
     public static void deletePost(Integer postid) {
         try {
