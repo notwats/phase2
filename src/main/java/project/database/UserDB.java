@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import static project.database.DBInfo.getConnection;
 
 public class UserDB {
-
     public static void addUser(User user) {
         try {
             if (user == null)
@@ -22,7 +21,7 @@ public class UserDB {
                     ",'" + user.getUsername() + "','" + user.getPassword() + "','" +
                     user.getCreateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
                     "','" + user.getSecurityAnswer() + "'," + user.getSecurityQuestion() + ","
-                    + ((user.getIsNormal()) ? "1" : "0") +",NULL)";
+                    + ((user.getIsNormal()) ? "1" : "0") +",'"+ user.getProfileImage() +"')";
             // System.out.println(query);
             con.createStatement().execute(query);
             con.close();
@@ -32,13 +31,12 @@ public class UserDB {
     }
 
 
-
     public static void updateUser(User user) {
         try {
             Connection con = getConnection();
             String query = "update `user` set user_id = '" + user.getUserID() +
                     "', username = '"+ user.getUsername()+
-                    "', password = '" + user.getPassword()+"','"+user.getProfileImage() +
+                    "', password = '" + user.getPassword()+
 //                    "', type = " +
 //                    ((user.getIsNormal()) ? "1" : "0")+
                     "';";
@@ -55,7 +53,6 @@ public class UserDB {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
             st.execute("delete from `user` where user_id = '" + user.getUserID()+"';");
-            st.execute("delete from `post` where sender_id = '" + user.getUserID()+"';");
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +69,6 @@ public class UserDB {
             while (rs.next()) {
                 following.add(rs.getInt(2));
             }
-            con.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -93,7 +89,6 @@ public class UserDB {
             while (rs.next()) {
                 followers.add(rs.getInt(1));
             }
-            con.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -101,18 +96,26 @@ public class UserDB {
         return followers;
     }
 
-    public static void unFollow(User loggedInUser, User currentProfile) {
+    public static void unFollow(Integer loggedInUser, Integer currentProfile) {
         try {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
-            //st.execute("delete from `followship` where user_id = '" + user.getUserID()+"';");
+            st.execute("delete from `followship` where is_following_id = "+ loggedInUser+ " and is_followed_id= "+ currentProfile );
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void follow(User loggedInUser, User currentProfile) {
-
+    public static void follow(Integer loggedInUser, Integer currentProfile) {
+        try {
+            Connection con = DBInfo.getConnection();
+            Statement st = con.createStatement();
+            st.execute("INSERT INTO followship( is_following_id , is_followed_id )  VALUES( "
+                    +loggedInUser+"," +currentProfile  + ")");
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

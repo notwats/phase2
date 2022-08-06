@@ -70,9 +70,7 @@ public class PostDB extends DBGetter {
                 Post ps = getPostByPostID(rs.getInt("post_id"));
 
 
-                // phaseeeeeeeee 111111111111111 no imageeeeee
 
-                if (ps.getContext().length() != 0)
                     ret.add(ps);
             }
             con.close();

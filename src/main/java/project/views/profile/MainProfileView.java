@@ -89,6 +89,7 @@ public class MainProfileView extends SceneController implements Initializable {
         if (!loggedInUser.getIsNormal()) {
             isBusiness.setText("Business account");
             //   viewLabel.setText(loggedInUser.getV);
+            viewLabel.setVisible(false);
         } else {
             isBusiness.setVisible(false);
             viewLabel.setVisible(false);

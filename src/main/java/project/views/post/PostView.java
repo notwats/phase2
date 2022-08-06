@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import project.Main;
+import project.database.PostDB;
 import project.models.Post;
 
 import java.net.URL;
@@ -15,8 +16,10 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static project.Config.imageAdd;
+import static project.SceneController.loggedInUser;
 
 public class PostView {
+    Post currentPost;
 
     @FXML
     private Label adPost;
@@ -32,10 +35,18 @@ public class PostView {
 
     @FXML
     void likeButton(MouseEvent event) {
-
+        if (currentPost.getLikedUsersid().contains(loggedInUser.getNumberID())) {
+            System.out.println("you have liked this post already");
+        } else {
+            currentPost.getLikedUsersid().add(loggedInUser.getNumberID());
+            currentPost.setLikeNumber(currentPost.getLikedUsersid().size());
+            PostDB.addLike(currentPost.getPostID() , loggedInUser.getNumberID());
+            System.out.println("liked");
+        }
     }
 
     public void initialize(Post post) {
+        currentPost=post;
         caption.setText(post.getContext());
         if (!post.getIsNormal()) {
             adPost.setText("-------AD-------");
