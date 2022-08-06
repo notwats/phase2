@@ -1,4 +1,5 @@
 package project;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import project.models.User;
+import project.views.Search;
 import project.views.chats.GroupView;
 import project.views.post.Explore;
 import project.views.post.NewPost;
@@ -41,39 +43,28 @@ public class SceneController {
 //    }
 
 
-   public void chatsButton(ActionEvent event) throws IOException {
+    public void chatsButton(ActionEvent event) throws IOException {
         GroupView.run();
     }
 
 
-   public void homeButton(ActionEvent event) throws IOException {
-       Explore.run();
+    public void homeButton(ActionEvent event) throws IOException {
+        Explore.run();
     }
 
 
-   public void profileButton(ActionEvent event) throws IOException {
+    public void profileButton(ActionEvent event) throws IOException {
         MainProfileView.run();
     }
 
 
-   public void searchButton(ActionEvent event) {
-
+    public void searchButton(ActionEvent event) throws IOException {
+        Search.run();
     }
 
 
-     public void addPostButton(ActionEvent event) throws IOException {
-         NewPost.run();
+    public void addPostButton(ActionEvent event) throws IOException {
+        NewPost.run();
     }
 
-    public String fileChooser() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("photo");
-        fileChooser.setInitialDirectory(new File("src/main/resources/Images/"));
-        File file = null;
-        try {
-            file = fileChooser.showOpenDialog(Main.stage);
-        } catch (Exception e) {
-        }
-        return file.getAbsolutePath();
-    }
 }

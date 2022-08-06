@@ -29,7 +29,6 @@ public class Post implements Comparable<Post> {
     ArrayList<Integer> commentsid = new ArrayList<>();
     ArrayList<Integer> likedUsersid = new ArrayList<>();
 
-
     public ArrayList<Date> likesDate = new ArrayList<>();
     public ArrayList<Date> viewsDate = new ArrayList<>();
 
