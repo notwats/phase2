@@ -8,19 +8,24 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Objects;
+
+import static project.database.DBInfo.getConnection;
 
 public class UpdateDB {
 
     public static void messageCreationInPrivateChat(String message, int userID, int friendID, Date creationDate, int forwardedFromID, int repliedToID) {
-        try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
 
+        try{
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
             if(forwardedFromID == -1 && repliedToID == -1 )
-                statement.executeQuery("INSERT INTO private_message( sender_id, receiver_id, text, creation_time, is_replied)  VALUES( "+userID+","+friendID+","+message+","+creationDate+", FALSE)");
+                statement.execute("INSERT INTO private_message( sender_id, receiver_id, text, creation_time, is_replied)  VALUES( "+userID+","+friendID+","+message+",'"+now.format(dtf)+"', FALSE)");
             else
-                statement.executeQuery("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( "+userID+","+friendID+","+message+","+creationDate+","+forwardedFromID+","+repliedToID+", TRUE)");
-
+                statement.execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( "+userID+","+friendID+","+message+",'"+now.format(dtf)+"',"+forwardedFromID+","+repliedToID+", TRUE)");
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -30,13 +35,12 @@ public class UpdateDB {
 
     public static void deletePrivateChat(int id1, int id2) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("DELETE FROM TABLE private_chat WHERE first_user_id_1 =" + id1 +"AND second_user_id ="+ id2 );
-            statement.executeQuery("DELETE FROM TABLE private_chat WHERE first_user_id_1 =" + id2 +"AND second_user_id ="+ id1 );
-
+            statement.execute("DELETE FROM TABLE private_chat WHERE first_user_id_1 =" + id1 +"AND second_user_id ="+ id2 );
+            statement.execute("DELETE FROM TABLE private_chat WHERE first_user_id_1 =" + id2 +"AND second_user_id ="+ id1 );
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -48,14 +52,11 @@ public class UpdateDB {
         LocalDateTime now = LocalDateTime.now();
 
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
+            Connection con = getConnection();
+            String query = "INSERT INTO private_chat(first_user_id, second_user_id) VALUES( " + firstID +", "+secondID+" )";
+            con.createStatement().execute(query);
 
-            Statement statement = connection.createStatement();
-
-            statement.executeQuery("INSERT INTO private_chat VALUES(" + firstID +", "+ secondID  +", "+ dtf.format(now) + ")");
-
-
-
+            con.close();
 
         } catch (Exception e){
             e.printStackTrace();
@@ -64,11 +65,11 @@ public class UpdateDB {
 
     public static void banMemberInGroup(int memberID, Group group) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("INSERT INTO ban_list VALUES( " + group.getGroupNumberID() + ", " + memberID + ")");
+            statement.execute("INSERT INTO ban_list VALUES( " + group.getGroupNumberID() + ", " + memberID + ")");
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -76,11 +77,12 @@ public class UpdateDB {
 
     public static void unbanMemberInGroup(int memberID, Group group) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("DELETE FROM ban_list WHERE group_id =" + group.getGroupNumberID() +"AND user_id =" + memberID);
+
+            statement.execute("DELETE FROM ban_list WHERE group_id =" + group.getGroupNumberID() +"AND user_id =" + memberID);
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -89,11 +91,11 @@ public class UpdateDB {
 
     public static void removeMemberFromGroup(int memberID, Group group) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("DELETE FROM membership WHERE group_id =" + group.getGroupNumberID() +"AND user_id =" + memberID);
+            statement.execute("DELETE FROM membership WHERE group_id =" + group.getGroupNumberID() +"AND user_id =" + memberID);
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -101,15 +103,15 @@ public class UpdateDB {
 
 
     public static void addMemberToGroup(int groupNumberID, int memberID) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("INSERT INTO membership(group_id, user_id, join_time) VALUES(" + groupNumberID +", " + memberID +", " + dtf.format(now) +")");
+            statement.executeQuery("INSERT INTO membership(group_id, user_id, join_time) VALUES(" + groupNumberID +", " + memberID +", '" + now.format(dtf) +"')");
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -121,12 +123,17 @@ public class UpdateDB {
         LocalDateTime now = LocalDateTime.now();
 
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
+            Connection con = getConnection();
+            String query1 = "INSERT INTO `group`(group_id, group_name, group_admin_id) VALUES( '" + groupID +"', '"+groupName+"', "+adminID+")";
+            con.createStatement().execute(query1);
 
-            Statement statement = connection.createStatement();
+            int groupNumberID = Objects.requireNonNull(DBGetter.findGroupByGroupID(groupID)).getGroupNumberID();
 
-            statement.executeQuery("INSERT INTO `group`(group_id, group_name, group_admin_id) VALUES(" + groupID +", "+groupName+", "+adminID+")");
-            statement.executeQuery("INSERT INTO membership(group_id, user_id, join_time) VALUES(" + groupID +", " + adminID +", " + dtf.format(now) +")");
+            String query2 = "INSERT INTO membership(group_number_id, user_number_id) VALUES( " + groupNumberID +", " + adminID +" )";
+
+
+            con.createStatement().execute(query2);
+            con.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -134,12 +141,12 @@ public class UpdateDB {
 
     public static void deleteGroup(int groupNumberID) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("DELETE FROM `group` WHERE group_number_id = " + groupNumberID);
-            statement.executeQuery("DELETE FROM membership WHERE group_id = " + groupNumberID);
+            statement.execute("DELETE FROM `group` WHERE group_number_id = " + groupNumberID);
+            statement.execute("DELETE FROM membership WHERE group_number_id = " + groupNumberID);
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -147,11 +154,11 @@ public class UpdateDB {
 
     public static void changeGroupName(int groupNumberID, String newName) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("UPDATE group SET group_name = " + newName +"WHERE group_number_id = " + groupNumberID);
+            statement.execute("UPDATE group SET group_name = '" + newName +"' WHERE group_number_id = " + groupNumberID);
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -159,12 +166,11 @@ public class UpdateDB {
 
     public static void changeGroupID(int groupNumberID, String newGroupID) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("UPDATE group SET group_id = " + newGroupID + " WHERE group_number_id = " + groupNumberID);
-
+            statement.execute("UPDATE group SET group_id = " + newGroupID + " WHERE group_number_id = " + groupNumberID);
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -173,12 +179,11 @@ public class UpdateDB {
 
     public static void editGroupMessageTextInDatabase(String editedText, int messageID) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-            statement.executeQuery("UPDATE  group_message SET `text` = " + editedText + " WHERE message_id = " + messageID);
-
+            statement.execute("UPDATE  group_message SET `text` = " + editedText + " WHERE message_id = " + messageID);
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -188,16 +193,18 @@ public class UpdateDB {
     public static void messageCreationInGroup(String message, int senderID, int groupID, Date creationDate, int forwardedFromID, int repliedToID){
 
         // have to include time of sending the message too
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
 
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
-            Statement statement = connection.createStatement();
+            Connection con = getConnection();
             if(forwardedFromID == -1 && repliedToID == -1 )
-                statement.executeQuery("INSERT INTO group_message( sender_id, group_id, text, creation_time, is_replied)  VALUES( "+senderID+","+groupID+","+message+","+senderID+","+creationDate+","+groupID+", FALSE)");
-            else
-                statement.executeQuery("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( "+senderID+","+groupID+","+message+","+senderID+","+creationDate+","+groupID+","+forwardedFromID+","+repliedToID +", true)");
 
+                con.createStatement().execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, is_replied)  VALUES( "+senderID+" , "+groupID+" , '"+message+"', '"+now.format(dtf)+"' , FALSE)");
+            else
+                con.createStatement().execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( "+senderID+","+groupID+","+message+","+senderID+",'"+now.format(dtf)+"',"+groupID+","+forwardedFromID+","+repliedToID +", true)");
+
+            con.close();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -205,12 +212,11 @@ public class UpdateDB {
 
     public static void blockerBlocks(int blocker, int blocked) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "inthelight");
-
+            Connection connection = getConnection();
             Statement statement = connection.createStatement();
 
-   //         statement.executeQuery("INSERT INTO block_list( sender_id, group_id, text, creation_time, is_replied)  VALUES( "+senderID+","+groupID+","+message+","+senderID+","+creationDate+","+groupID+", FALSE)");
-
+            //         statement.executeQuery("INSERT INTO block_list( sender_id, group_id, text, creation_time, is_replied)  VALUES( "+senderID+","+groupID+","+message+","+senderID+","+creationDate+","+groupID+", FALSE)");
+            connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }
