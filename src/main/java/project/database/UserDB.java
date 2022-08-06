@@ -22,7 +22,7 @@ public class UserDB {
                     ",'" + user.getUsername() + "','" + user.getPassword() + "','" +
                     user.getCreateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
                     "','" + user.getSecurityAnswer() + "'," + user.getSecurityQuestion() + ","
-                    + ((user.getIsNormal()) ? "1" : "0") +",'"+user.getProfileImage() +"')";
+                    + ((user.getIsNormal()) ? "1" : "0") +",NULL)";
             // System.out.println(query);
             con.createStatement().execute(query);
             con.close();
@@ -30,6 +30,7 @@ public class UserDB {
             e.printStackTrace();
         }
     }
+
 
 
     public static void updateUser(User user) {
