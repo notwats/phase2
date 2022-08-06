@@ -18,22 +18,22 @@ public class MainChatsController  extends Controller{
         return groups;
     }
 
-    public void handleCreateGroup(String groupID, String groupName, int adminID) {
+    public String handleCreateGroup(String groupID, String groupName, int adminID) {
         if(DBGetter.findGroupByGroupID(groupID) != null) {
-            System.out.println("this ID is already taken");
-            return;
+            return "this ID is already taken";
         }
 
         UpdateDB.createGroup(groupID, groupName, adminID);
+        return "added successfully";
     }
 
-    public void handleDeleteGroup(Group group, int userID) {
+    public String handleDeleteGroup(Group group, int userID) {
         if(group.getGroupAdminNumberID() != userID){
-            System.out.println("you are not the admin of this group you can't delete it");
-            return;
+            return "you are not the admin";
         }
 
         UpdateDB.deleteGroup(group.getGroupNumberID());
+        return "deleted successfully";
     }
 
     public boolean handleEnteringGroup(Group group, int id) {
@@ -64,16 +64,15 @@ public class MainChatsController  extends Controller{
         return chats;
     }
 
-    public void handleDeletePrivateChat(int id1, int id2) {
+    public String handleDeletePrivateChat(int id1, int id2) {
         if(id1 == id2){
-            System.out.println("you can't have a chat with yourself");
-            return;
+            return "you can't have a chat with yourself";
         }
         if(!DBGetter.checkPrivateChat(id1, id2)){
-            System.out.println("you don't have a chat with this user");
-            return;
+            return "you don't have a chat with this user";
         }
 
         UpdateDB.deletePrivateChat(id1, id2);
+        return "deleted successfully";
     }
 }

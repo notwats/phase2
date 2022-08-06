@@ -2,17 +2,90 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.MainChatView">
-   <children>
-      <Label layoutX="72.0" layoutY="36.0" text="Groups Or Private Chats?">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Label>
-      <Button layoutX="145.0" layoutY="145.0" mnemonicParsing="false" onAction="#goToPrivate" text="Private Chats" />
-      <Button layoutX="160.0" layoutY="276.0" mnemonicParsing="false" onAction="#goToGroup" text="Groups" />
-   </children>
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.views.chats.MainChatView">
+   <bottom>
+      <AnchorPane prefHeight="70.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox minHeight="50.0" minWidth="500.0" prefHeight="70.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Button minHeight="50.0" minWidth="100.0" mnemonicParsing="false" onAction="#homeButton" prefHeight="70.0" prefWidth="1200.0" text="Home" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#searchButton" prefHeight="70.0" prefWidth="1200.0" text="Search" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#addPostButton" prefHeight="70.0" prefWidth="1200.0" text="+Post">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chatsButton" prefHeight="70.0" prefWidth="1200.0" text="Chats" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#profileButton" prefHeight="70.0" prefWidth="1200.0" text="Profile" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <left>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="chatVBox" alignment="TOP_CENTER" prefHeight="493.0" prefWidth="194.0">
+               <children>
+                  <Label fx:id="chatLabel" alignment="CENTER" prefHeight="34.0" prefWidth="106.0" />
+               </children></VBox>
+         </content>
+      </ScrollPane>
+   </left>
+   <right>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="groupVBox" alignment="TOP_CENTER" prefHeight="494.0" prefWidth="195.0">
+               <children>
+                  <Label fx:id="groupLabel" alignment="CENTER" prefHeight="34.0" prefWidth="106.0" />
+               </children></VBox>
+         </content>
+      </ScrollPane>
+   </right>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" layoutX="68.0" layoutY="91.0" prefHeight="158.0" prefWidth="151.0">
+               <children>
+                  <Label fx:id="groupStatus" prefHeight="18.0" prefWidth="141.0" />
+                  <TextField fx:id="groupIdField" promptText="Enter Group ID" />
+                  <Button mnemonicParsing="false" onAction="#addGroup" text="Add" />
+                  <Button mnemonicParsing="false" onAction="#deleteGroup" text="Delete" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="72.0" layoutY="250.0" prefHeight="200.0" prefWidth="143.0">
+               <children>
+                  <Label fx:id="chatStatus" prefHeight="18.0" prefWidth="111.0" />
+                  <TextField fx:id="userIdField" promptText="Enter User ID" />
+                  <Button mnemonicParsing="false" onAction="#addPrivateChat" text="Add Chat" />
+                  <Button mnemonicParsing="false" onAction="#deletePrivateChat" text="Remove Chat" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

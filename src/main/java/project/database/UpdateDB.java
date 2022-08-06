@@ -22,9 +22,9 @@ public class UpdateDB {
             Connection connection = getConnection();
             Statement statement = connection.createStatement();
             if(forwardedFromID == -1 && repliedToID == -1 )
-                statement.execute("INSERT INTO private_message( sender_id, receiver_id, text, creation_time, is_replied)  VALUES( "+userID+","+friendID+","+message+",'"+now.format(dtf)+"', FALSE)");
+                statement.execute("INSERT INTO private_message( sender_id, receiver_id, text, creation_time, is_replied)  VALUES( "+userID+","+friendID+",'"+message+"','"+now.format(dtf)+"', FALSE)");
             else
-                statement.execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( "+userID+","+friendID+","+message+",'"+now.format(dtf)+"',"+forwardedFromID+","+repliedToID+", TRUE)");
+                statement.execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( "+userID+","+friendID+",'"+message+"','"+now.format(dtf)+"',"+forwardedFromID+","+repliedToID+", TRUE)");
             connection.close();
         } catch (Exception e){
             e.printStackTrace();
@@ -76,28 +76,25 @@ public class UpdateDB {
     }
 
     public static void unbanMemberInGroup(int memberID, Group group) {
-        try{
-            Connection connection = getConnection();
+        try {
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-
-
-            statement.execute("DELETE FROM ban_list WHERE group_id =" + group.getGroupNumberID() +"AND user_id =" + memberID);
-            connection.close();
-        } catch (Exception e){
-            e.printStackTrace();
+            int var10001 = group.getGroupNumberID();
+            statement.execute("DELETE FROM ban_list WHERE group_id = " + var10001 + " AND user_id =" + memberID);
+        } catch (Exception var4) {
+            var4.printStackTrace();
         }
     }
 
 
     public static void removeMemberFromGroup(int memberID, Group group) {
-        try{
-            Connection connection = getConnection();
+        try {
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-
-            statement.execute("DELETE FROM membership WHERE group_id =" + group.getGroupNumberID() +"AND user_id =" + memberID);
-            connection.close();
-        } catch (Exception e){
-            e.printStackTrace();
+            int var10001 = group.getGroupNumberID();
+            statement.execute("DELETE FROM membership WHERE group_number_id =" + var10001 + " AND user_number_id =" + memberID);
+        } catch (Exception var4) {
+            var4.printStackTrace();
         }
     }
 
@@ -106,36 +103,30 @@ public class UpdateDB {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
-        try{
-            Connection connection = getConnection();
+        try {
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-
-            statement.executeQuery("INSERT INTO membership(group_id, user_id, join_time) VALUES(" + groupNumberID +", " + memberID +", '" + now.format(dtf) +"')");
-            connection.close();
-        } catch (Exception e){
-            e.printStackTrace();
+            statement.execute("INSERT INTO membership(group_number_id, user_number_id, join_date) VALUES( " + groupNumberID + ", " + memberID + ", '" + now.format(dtf) + "')");
+        } catch (Exception var6) {
+            var6.printStackTrace();
         }
     }
 
 
     public static void createGroup(String groupID, String groupName, int adminID) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime var4 = LocalDateTime.now();
 
-        try{
-            Connection con = getConnection();
-            String query1 = "INSERT INTO `group`(group_id, group_name, group_admin_id) VALUES( '" + groupID +"', '"+groupName+"', "+adminID+")";
+        try {
+            Connection con = DBInfo.getConnection();
+            String query1 = "INSERT INTO `group`(group_id, group_name, group_admin_id) VALUES( '" + groupID + "', '" + groupName + "', " + adminID + ")";
             con.createStatement().execute(query1);
-
-            int groupNumberID = Objects.requireNonNull(DBGetter.findGroupByGroupID(groupID)).getGroupNumberID();
-
-            String query2 = "INSERT INTO membership(group_number_id, user_number_id) VALUES( " + groupNumberID +", " + adminID +" )";
-
-
+            int groupNumberID = ((Group)Objects.requireNonNull(DBGetter.findGroupByGroupID(groupID))).getGroupNumberID();
+            String query2 = "INSERT INTO membership(group_number_id, user_number_id) VALUES( " + groupNumberID + ", " + adminID + " )";
             con.createStatement().execute(query2);
             con.close();
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception var9) {
+            var9.printStackTrace();
         }
     }
 
@@ -153,26 +144,22 @@ public class UpdateDB {
     }
 
     public static void changeGroupName(int groupNumberID, String newName) {
-        try{
-            Connection connection = getConnection();
+        try {
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-
-            statement.execute("UPDATE group SET group_name = '" + newName +"' WHERE group_number_id = " + groupNumberID);
-            connection.close();
-        } catch (Exception e){
-            e.printStackTrace();
+            statement.execute("UPDATE `group` SET group_name = '" + newName + "' WHERE group_number_id = " + groupNumberID + " ;");
+        } catch (Exception var4) {
+            var4.printStackTrace();
         }
     }
 
     public static void changeGroupID(int groupNumberID, String newGroupID) {
-        try{
-            Connection connection = getConnection();
+        try {
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-
-            statement.execute("UPDATE group SET group_id = " + newGroupID + " WHERE group_number_id = " + groupNumberID);
-            connection.close();
-        } catch (Exception e){
-            e.printStackTrace();
+            statement.execute("UPDATE `group` SET group_id = '" + newGroupID + "' WHERE group_number_id = " + groupNumberID);
+        } catch (Exception var4) {
+            var4.printStackTrace();
         }
     }
 

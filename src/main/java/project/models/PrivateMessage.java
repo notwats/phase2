@@ -10,9 +10,9 @@ public class PrivateMessage {
     int firstUserID;
     int secondUserID;
     String messageText;
-    int inReplyTo;
-    Date date;
-    int forwardedFrom;
+    public int inReplyTo;
+    public Date date;
+    public int forwardedFrom;
 
     public PrivateMessage(int firstUserID, int secondUserID, int messageID, String messageText, int inReplyTo, Date date, int forwardedFrom) {
         this.firstUserID = firstUserID;

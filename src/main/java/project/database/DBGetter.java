@@ -2,6 +2,7 @@ package project.database;
 // line 118
 
 
+import project.SceneController;
 import project.models.*;
 
 import java.sql.Connection;
@@ -148,24 +149,33 @@ user.setProfileImage(resultSet.getString("profile_image"));
         ArrayList<GroupMessage> messages = new ArrayList<>();
 
         try {
-            Connection connection = getConnection();
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-
             ResultSet resultSet = statement.executeQuery("SELECT * FROM group_message WHERE group_id = " + groupID + " ORDER BY creation_time");
 
-            while (resultSet.next()) {
+            while(resultSet.next()) {
                 int senderID = Integer.parseInt(resultSet.getString("sender_id"));
                 int messageID = Integer.parseInt(resultSet.getString("message_id"));
-                int inReplyTo = Integer.parseInt(resultSet.getString("replied_message_id"));
-                int forwardedFrom = Integer.parseInt(resultSet.getString("forwarded_from"));
-                Date creationDate = resultSet.getDate("creation_date");
-                GroupMessage newMessage = new GroupMessage(groupID, senderID, messageID, resultSet.getString("text"), inReplyTo, creationDate, forwardedFrom);
+                int inReplyTo;
+                if (resultSet.getString("replied_to") != null) {
+                    inReplyTo = Integer.parseInt(resultSet.getString("replied_to"));
+                } else {
+                    inReplyTo = -1;
+                }
 
+                int forwardedFrom;
+                if (resultSet.getString("forwarded_from") != null) {
+                    forwardedFrom = Integer.parseInt(resultSet.getString("forwarded_from"));
+                } else {
+                    forwardedFrom = -1;
+                }
+
+                Date creationDate = resultSet.getDate("creation_time");
+                GroupMessage newMessage = new GroupMessage(groupID, senderID, messageID, resultSet.getString("text"), inReplyTo, creationDate, forwardedFrom);
                 messages.add(newMessage);
             }
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception var11) {
+            var11.printStackTrace();
         }
 
         return messages;
@@ -271,18 +281,14 @@ user.setProfileImage(resultSet.getString("profile_image"));
 
     public static boolean BlockedByBLocker(int blockedID, int blocker) {
         try {
-            Connection connection =getConnection();
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-
-            ResultSet groupSet = statement.executeQuery("SELECT * FROM block_list WHERE blocked_id = " + blockedID + "AND blocked_by_id = " + blocker);
-
-            // if the set is empty it means that no one is blocked
-            if (groupSet != null && groupSet.next())
+            ResultSet groupSet = statement.executeQuery("SELECT * FROM block_list WHERE blocked_id = " + blockedID + " AND blocked_by_id = " + blocker);
+            if (groupSet != null && groupSet.next()) {
                 return true;
-
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            }
+        } catch (Exception var5) {
+            var5.printStackTrace();
         }
 
         return false;
@@ -331,17 +337,17 @@ user.setProfileImage(resultSet.getString("profile_image"));
 
         try {
             Connection connection = getConnection();
-            Statement statement = connection.createStatement();
+            Statement statement1 = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM private_chat WHERE first_user_id = " + numberID + " OR second_user_id = " + numberID);
+            ResultSet resultSet1 = statement1.executeQuery("SELECT * FROM private_chat WHERE first_user_id = " + numberID + " OR second_user_id = " + numberID );
 
-            while (resultSet.next()) {
-
-                ResultSet chatSet = statement.executeQuery("SELECT * FROM private_chat WHERE first_user_id = " + numberID + " OR second_user_id = " + numberID);
-                Personal personal = new Personal(Integer.parseInt(chatSet.getString("first_user_id")), Integer.parseInt(chatSet.getString("second_user_id")), chatSet.getString("creation_date"));
-
+            while (resultSet1.next()) {
+                int user1id = resultSet1.getInt("first_user_id");
+                int user2id = resultSet1.getInt("second_user_id");
+                Personal personal = new Personal(user1id, user2id, resultSet1.getString("creation_date"));
                 chats.add(personal);
             }
+
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -354,27 +360,67 @@ user.setProfileImage(resultSet.getString("profile_image"));
         ArrayList<PrivateMessage> messages = new ArrayList<>();
 
         try {
-            Connection connection = getConnection();
+            Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM private_message WHERE sender_id = " + id1 + " AND receiver_id = " + id2 + " ORDER BY creation_time");
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM group_message WHERE sender_id = " + id1 + " ORDER BY creation_date");
+            int senderID;
+            int receiverID;
+            int messageID;
+            while(resultSet.next()) {
+                senderID = Integer.parseInt(resultSet.getString("sender_id"));
+                receiverID = Integer.parseInt(resultSet.getString("receiver_id"));
+                messageID = Integer.parseInt(resultSet.getString("message_id"));
+                int inReplyTo;
+                if (resultSet.getString("replied_to") != null) {
+                    inReplyTo = Integer.parseInt(resultSet.getString("replied_to"));
+                } else {
+                    inReplyTo  = -1;
+                }
 
-            while (resultSet.next()) {
-                int senderID = Integer.parseInt(resultSet.getString("sender_id"));
-                int messageID = Integer.parseInt(resultSet.getString("message_id"));
-                int inReplyTo = Integer.parseInt(resultSet.getString("replied_message_id"));
-                int forwardedFrom = Integer.parseInt(resultSet.getString("forwarded_from"));
-                Date creationDate = resultSet.getDate("creation_date");
-                //               PrivateMessage newMessage = new PrivateMessage( groupID, senderID , messageID, resultSet.getString("text"), inReplyTo, creationDate,forwardedFrom);
+                int forwardedFrom;
+                if (resultSet.getString("replied_to") != null) {
+                    forwardedFrom = Integer.parseInt(resultSet.getString("forwarded_from"));
+                } else {
+                    forwardedFrom = -1;
+                }
 
-                //             messages.add(newMessage);
+                Date creationDate = resultSet.getDate("creation_time");
+                PrivateMessage newMessage = new PrivateMessage(senderID, receiverID, messageID, resultSet.getString("text"), inReplyTo , creationDate, forwardedFrom);
+                messages.add(newMessage);
             }
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return messages;
+            Statement statement1 = connection.createStatement();
+            ResultSet resultSet2 = statement1.executeQuery("SELECT * FROM private_message WHERE sender_id = " + id2 + " AND receiver_id = " + id1 + " ORDER BY creation_time");
+
+            while(resultSet2.next()) {
+                senderID = Integer.parseInt(resultSet2.getString("sender_id"));
+                receiverID = Integer.parseInt(resultSet2.getString("receiver_id"));
+                messageID = Integer.parseInt(resultSet2.getString("message_id"));
+                int inReplyTo;
+                if (resultSet2.getString("replied_to") != null) {
+                    inReplyTo = Integer.parseInt(resultSet2.getString("replied_to"));
+                } else {
+                    inReplyTo = -1;
+                }
+
+                int forwardedFrom;
+                if (resultSet2.getString("replied_to") != null) {
+                    forwardedFrom = Integer.parseInt(resultSet2.getString("forwarded_from"));
+                } else {
+                    forwardedFrom = -1;
+                }
+
+                Date creationDate = resultSet2.getDate("creation_time");
+                PrivateMessage newMessage = new PrivateMessage(senderID, receiverID, messageID, resultSet2.getString("text"), inReplyTo, creationDate, forwardedFrom);
+                messages.add(newMessage);
+            }
+
+            return messages;
+        } catch (Exception var15) {
+            var15.printStackTrace();
+            return messages;
+        }
     }
 
 }

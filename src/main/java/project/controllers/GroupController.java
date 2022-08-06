@@ -16,137 +16,128 @@ public class GroupController extends Controller{
     }
 
 
-    public void handleGroupNameChange(String groupName, int groupNumberID, String newName) {
-        if(newName.length() <= 25){
-            System.out.println("group name is too long");
-            return;
+    public String handleGroupNameChange(String groupName, int groupNumberID, String newName) {
+        if(newName.length() >= 25){
+            return "group name is too long";
         }
+
         if(groupName.equals(newName)){
-            System.out.println("the new name is the same as before");
-            return;
+            return "the new name is the same as before";
         }
 
         UpdateDB.changeGroupName(groupNumberID, newName);
-        System.out.println("group name changed to " + newName + " successfully" );
+        return ("group name changed to " + newName + " successfully" );
     }
 
-    public void handleGroupIDChange(int groupNumberID, String groupID, String newGroupID) {
-        if(newGroupID.length() <= 25){
-            System.out.println("group id is too long");
-            return;
-        }
-        if(newGroupID.equals(groupID)){
-            System.out.println("the new id is the same as before");
-            return;
+    public String handleGroupIDChange(int groupNumberID, String groupID, String newGroupID) {
+        if(newGroupID.length() >= 25){
+            return "group id is too long";
         }
 
-        if( DBGetter.findGroupByGroupNumberID(groupNumberID) != null){
-            System.out.println("this groupID is taken");
-            return;
+        if(newGroupID.equals(groupID)){
+            return "the new id is the same as before";
+        }
+
+        if( DBGetter.findGroupByGroupID(newGroupID) != null){
+            return "this groupID is taken";
         }
 
 
         UpdateDB.changeGroupID(groupNumberID, newGroupID);
 
+        return "ID changed successfully";
     }
 
-    public void handleSendMessage(String message, int senderID, int groupNumberID, Date dateOfNow, int i, int inReplyTo) {
+    public boolean handleSendMessage(String message, int senderID, int groupNumberID, Date dateOfNow, int i, int inReplyTo) {
         // ban check
         if(DBGetter.banCheck(groupNumberID, senderID)){
             System.out.println("you're banned from sending a message in this chat");
+            return false;
         }
 
 
         UpdateDB.messageCreationInGroup(message, senderID, groupNumberID, dateOfNow, i, inReplyTo );
+        return true;
     }
 
-    public void handleAddMember(String memberID, Group group, int adminID) {
+    public String handleAddMember(String memberID, Group group, int adminID) {
         if(adminID != group.getGroupAdminNumberID()){
-            System.out.println("you are not the admin of this group");
-            return;
+            return "you are not the admin";
         }
         User newMember = DBGetter.findUserByUserID(memberID);
         if(newMember == null){
-            System.out.println("the member id doesn't belong to any user");
-            return;
+            return "the member isn't for anyone";
         }
         // check whether the admin is blocked by user or not ]
         if(DBGetter.BlockedByBLocker(adminID, newMember.getId() )){
-            System.out.println("you are blocked by the user and can't add him");
-            return;
+            return "you are blocked by the user";
         }
         // check whether the member isn't already in the chat
         if(DBGetter.checkMembership(newMember.getId(), group.getGroupNumberID())){
-            System.out.println("user is already in the group");
-            return;
+            return "user is already in the group";
         }
 
         UpdateDB.addMemberToGroup(group.getGroupNumberID(), newMember.getId());
+        return "successfully added";
     }
 
-    public void handleRemoveMember(String memberID, Group group, int adminID) {
+    public String handleRemoveMember(String memberID, Group group, int adminID) {
         if(adminID != group.getGroupAdminNumberID()){
-            System.out.println("you are not the admin of this group");
-            return;
+            return "you are not the admin of this group";
         }
         User newMember = DBGetter.findUserByUserID(memberID);
         if(newMember == null){
-            System.out.println("the member id doesn't belong to any user");
-            return;
+            return "the member id doesn't belong to any user";
         }
         // check whether user is a member of the group
         if(!DBGetter.checkMembership(newMember.getId(), group.getGroupNumberID())){
-            System.out.println("user isn't a member of the group");
-            return;
+            return  "user isn't a member of the group";
         }
 
         UpdateDB.removeMemberFromGroup(newMember.getId(), group);
+        return "successfully removed";
     }
 
-    public void handleBanMember(String memberID, Group group, int adminID) {
+    public String handleBanMember(String memberID, Group group, int adminID) {
         if(adminID != group.getGroupAdminNumberID()){
-            System.out.println("you are not the admin of this group");
-            return;
+            return"you are not the admin of this group";
         }
         User newMember = DBGetter.findUserByUserID(memberID);
         if(newMember == null){
-            System.out.println("the member id doesn't belong to any user");
-            return;
+            return"the member id doesn't belong to any user";
         }
         // check whether user is a member of the group
         if(!DBGetter.checkMembership(newMember.getId(), group.getGroupNumberID())){
-            System.out.println("user isn't a member of the group");
-            return;
+            return"user isn't a member of the group";
         }
         // check whether user is already banned
         if(DBGetter.banCheck(group.getGroupNumberID(),newMember.getId())){
-            System.out.println("user is already banned from messaging.");
-            return;
+            return "user is already banned from messaging.";
         }
+
         UpdateDB.banMemberInGroup(newMember.getId(), group);
+        return "successfully banned";
     }
 
-    public void handleUnbanMember(String memberID, Group group, int adminID) {
+    public String  handleUnbanMember(String memberID, Group group, int adminID) {
         if(adminID != group.getGroupAdminNumberID()){
-            System.out.println("you are not the admin of this group");
-            return;
+            return "you are not the admin of this group" ;
         }
         User newMember = DBGetter.findUserByUserID(memberID);
         if(newMember == null){
-            System.out.println("the member id doesn't belong to any user");
-            return;
+            return "the member id doesn't belong to any user";
         }
         // check whether user is a member of the group
         if(!DBGetter.checkMembership(newMember.getId(), group.getGroupNumberID())){
-            System.out.println("user isn't a member of the group");
-            return;
+            return "user isn't a member of the group";
         }
         // check whether user is already banned
         if(!DBGetter.banCheck(group.getGroupNumberID(),newMember.getId())){
-            System.out.println("user is already unbanned");
-            return;
+            return "user is already unbanned";
         }
         UpdateDB.unbanMemberInGroup(newMember.getId(), group);
+
+        return "successfully unbanned";
     }
 
     public void handleLeaveGroup(Group group, int memberNumberID) {

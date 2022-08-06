@@ -8,18 +8,20 @@ import java.util.Date;
 
 public class PrivateChatController {
 
-    public void handleSendMessage(String message, int userID, int friendID, Date dateOfNow, int forwardedFrom, int inReplyTo){
+    public boolean handleSendMessage(String message, int userID, int friendID, Date dateOfNow, int forwardedFrom, int inReplyTo){
         if(message.length() >= 50){
             System.out.println("your message is too long");
-            return;
+            return true;
         }
         // check whether the user is blocked by the friend
         if(DBGetter.BlockedByBLocker(userID, friendID)){
             System.out.println("unfortunately you are blocked by the user so you can't send them messages");
+            return false;
         }
 
         UpdateDB.messageCreationInPrivateChat(message, userID, friendID, dateOfNow, forwardedFrom, inReplyTo);
 
+        return true;
     }
 
     public void handleBlockUser(int ID, String userID) {

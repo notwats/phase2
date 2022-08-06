@@ -15,10 +15,11 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import project.SceneController;
-import project.controllers.GroupController;
+import project.controllers.PrivateChatController;
 import project.database.DBGetter;
 import project.models.Group;
 import project.models.GroupMessage;
+import project.models.PrivateMessage;
 import project.models.User;
 
 import java.io.IOException;
@@ -29,10 +30,13 @@ import java.util.Date;
 import static project.Config.css;
 import static project.Main.stage;
 
-public class GroupView extends SceneController {
+public class ChatView extends SceneController {
     public static User user;
-    public static Group group;
-    GroupController controller = new GroupController();
+    public static User friend;
+
+    private PrivateChatController  controller = new PrivateChatController();
+    @FXML
+    private Label blockLabel;
 
     @FXML
     private TextField messageField;
@@ -40,11 +44,10 @@ public class GroupView extends SceneController {
     @FXML
     private VBox chatBox;
 
-    @FXML
-    private Label banLabel;
+
 
     public static void run() throws IOException {
-        URL fxmlAddress = GroupView.class.getResource("group-view.fxml");
+        URL fxmlAddress = GroupView.class.getResource("chat-view.fxml");
         Parent pane = FXMLLoader.load(fxmlAddress);
         Scene scene = new Scene(pane);
         scene.getStylesheets().add(css);
@@ -57,25 +60,26 @@ public class GroupView extends SceneController {
     }
 
     private void fillChatBox(){
-        ArrayList<GroupMessage> messages = DBGetter.findGroupMessagesByGroupID(group.getGroupNumberID());
+        ArrayList<PrivateMessage> messages = DBGetter.findPrivateMessagesWithBothMembersID(friend.getNumberID(), user.getNumberID());
+
         chatBox.getChildren().clear();
-        for (GroupMessage message : messages) {
+        for (PrivateMessage message : messages) {
             if (message.inReplyTo == -1 && message.forwardedFrom == -1) {
-                Circle circle = new Circle(23);
+                Circle circle = new Circle(10);
                 Label label = new Label(message.getMessageText());
                 HBox hBox = new HBox(circle, label);
                 chatBox.getChildren().add(hBox);
             } else if (message.inReplyTo != -1) {
-                ///       || " the message that is replied to "
+                // reply theme
+                //       || " the message that is replied to "
                 // ----
                 // |  |
                 // |  |   " this is the message that user sent"
-                // ----/ reply theme
-
-                Circle circle = new Circle(23);
+                // ----
+                Rectangle rectangle = new Rectangle(2, 12);
                 GroupMessage inReplyTo = DBGetter.findMessageByMessageID(message.inReplyTo);
                 Label repliedLabel = new Label(inReplyTo.getMessageText());
-                HBox hBoxTop = new HBox(circle, repliedLabel);
+                HBox hBoxTop = new HBox(rectangle, repliedLabel);
                 // ---
 
                 Label label = new Label(message.getMessageText());
@@ -89,23 +93,14 @@ public class GroupView extends SceneController {
         }
     }
 
-    public void checkProfile(ActionEvent actionEvent) {
-        try {
-            GroupInfo.run();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+    public void checkProfile() {
+
     }
 
-    @FXML
-    public void sendMessage() {
+    public void sendMessage(ActionEvent actionEvent) {
         String message = messageField.getText();
         Date dateOfNow = new Date();
-        if(!controller.handleSendMessage(message, loggedInUser.getId(), group.getGroupNumberID(), dateOfNow, -1, -1)){
-            banLabel.setText("you are banned");
-        }
-        fillChatBox();
+        if(!controller.handleSendMessage(message, user.getId(), friend.getId(), dateOfNow,-1, -1))
+            blockLabel.setText("you are blocked");
     }
-
-
 }

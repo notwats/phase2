@@ -14,12 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import project.Main;
-import project.MainChatView;
 import project.SceneController;
 import project.controllers.UserProfileController;
 import project.database.PostDB;
 import project.models.Post;
 import project.models.User;
+import project.views.chats.MainChatView;
 import project.views.post.PostView;
 
 import java.io.IOException;
@@ -27,7 +27,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
-import static project.Config.imageAdd;
 import static project.Config.theme;
 import static project.Main.stage;
 

@@ -1,20 +1,13 @@
 package project;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import project.models.User;
 import project.views.Search;
-import project.views.chats.GroupView;
+import project.views.chats.MainChatView;
 import project.views.post.Explore;
 import project.views.post.NewPost;
 import project.views.profile.MainProfileView;
 
-import java.io.File;
 import java.io.IOException;
 
 public class SceneController {
@@ -44,7 +37,7 @@ public class SceneController {
 
 
     public void chatsButton(ActionEvent event) throws IOException {
-        GroupView.run();
+        MainChatView.run();
     }
 
 
