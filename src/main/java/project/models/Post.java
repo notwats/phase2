@@ -1,8 +1,10 @@
 package project.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +33,8 @@ public class Post implements Comparable<Post> {
     ArrayList<Comment> comments = new ArrayList<>();
     ArrayList<User> likedUsers = new ArrayList<>();
 
-
+    public HashMap<Date, Integer> likesPerday = new HashMap<>();
+    public HashMap<Date, Integer> viewsPerday = new HashMap<>();
     ArrayList<Tag> tags;
 
     public ArrayList<Comment> getComments() {

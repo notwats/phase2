@@ -27,7 +27,7 @@ public class PostDB extends DBGetter {
             for (Integer uuID : following) {
                 ArrayList<Post> usersPosts = getPostByUserID(uuID);
                 ret.addAll(usersPosts);
-            }
+            } con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class PostDB extends DBGetter {
             st.execute("INSERT INTO post( sender_id, text, creation_time, type , media)  VALUES( "
                     + post.getSenderid() + ",'" + post.getContext()
                     + "','" + now.format(dtf) + "'," + ((post.getIsNormal()) ? "1" : "0") + ",'" + post.getImageAddress() + "')");
-
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -122,7 +122,7 @@ con.close();
             cc.setLikeNumber(rs.getInt(4));
             cc.setRepliedTo(rs.getInt(5));
             cc.setCommentText(rs.getString(6));
-
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -133,8 +133,8 @@ con.close();
     public static Post getPostByPostID(Integer post_id) {
         Post ps = new Post();
         try {
-            Connection connection = DBInfo.getConnection();
-            Statement statement = connection.createStatement();
+            Connection con = DBInfo.getConnection();
+            Statement statement = con.createStatement();
 
             ResultSet rs = statement.executeQuery("SELECT * FROM post WHERE post_id = " + post_id);
             if (!rs.next()) {
@@ -142,14 +142,18 @@ con.close();
             }
             ps.setPostID(rs.getInt("post_id"));
             ps.setSenderid(rs.getInt(2));
+            ps.setContext(rs.getString(3));
+            // creation time
+            ps.setCreationDate(rs.getDate(4));
+            ps.setIsNormal(rs.getInt(5) != 0);
             //  ps.setRepliedPost(getPostbyPostID(rs.getLong(5)));
             //     ps.setLikes(rs.getInt(6));
             //    ps.setViews(rs.getInt(7));
-            //    ps.setComments(rs.getInt(8));
+
             ps.setComments(getCommentByPostID(ps.getPostID()));
             ps.setImageAddress(rs.getString("media"));
             //           ps.setCreationDate(LocalDateTime.parse(rs.getString("creation_time")));
-
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
