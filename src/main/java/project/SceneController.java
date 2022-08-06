@@ -8,6 +8,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import project.models.User;
 import project.views.chats.GroupView;
+import project.views.post.Explore;
 import project.views.post.NewPost;
 import project.views.profile.MainProfileView;
 
@@ -45,8 +46,8 @@ public class SceneController {
     }
 
 
-   public void homeButton(ActionEvent event) {
-
+   public void homeButton(ActionEvent event) throws IOException {
+       Explore.run();
     }
 
 

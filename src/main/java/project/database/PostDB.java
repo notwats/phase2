@@ -27,7 +27,9 @@ public class PostDB extends DBGetter {
             for (Integer uuID : following) {
                 ArrayList<Post> usersPosts = getPostByUserID(uuID);
                 ret.addAll(usersPosts);
-            } con.close();
+            }
+            ret.addAll(getPostByUserID(userID)); // +bara khodesh :/
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,7 +57,7 @@ public class PostDB extends DBGetter {
     }
 
     public static ArrayList<Post> getPostByUserID(Integer sender_id) {
-        System.out.println("byeeee");
+
         ArrayList<Post> ret = new ArrayList<>();
         try {
             Connection con = DBInfo.getConnection();
@@ -76,7 +78,7 @@ public class PostDB extends DBGetter {
                 //             ps.setCreationDate(new SimpleDateFormat("dd/MM/yyyy").parse(rs.getString("creation_time")));
                 ret.add(ps);
             }
-con.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -243,16 +245,15 @@ con.close();
         }
     }
 
-    public static void addLike(Post post) {
+    public static void addLike(Integer postid , Integer reacterid) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
         try {
             Connection con = DBInfo.getConnection();
-            Statement st = con.createStatement();
-            // post table
-            st.execute("update post set `text` = '" + post.getContext() + "' where post_id = " + post.getPostID() + ";");
+            Statement statement = con.createStatement();
 
-            //comment table
-            // post reaction table
-//another method
+            statement.execute("INSERT INTO post_reaction(post_id, reacter_id , date )  VALUES( " + postid + "," + reacterid + ",'" + now.format(dtf) + "')");
+
             con.close();
 
         } catch (SQLException e) {

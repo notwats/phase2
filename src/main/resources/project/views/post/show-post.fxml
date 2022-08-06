@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="project.views.post.ShowPost"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.views.post.ShowPost">
+    <bottom>
+        <AnchorPane prefHeight="70.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox minHeight="50.0" minWidth="500.0" prefHeight="70.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <children>
+                        <Button minHeight="50.0" minWidth="100.0" mnemonicParsing="false" onAction="#homeButton" prefHeight="70.0" prefWidth="1200.0" text="Home" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#searchButton" prefHeight="70.0" prefWidth="1200.0" text="Search" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#addPostButton" prefHeight="70.0" prefWidth="1200.0" text="+Post">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chatsButton" prefHeight="70.0" prefWidth="1200.0" text="Chats" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#profileButton" prefHeight="70.0" prefWidth="1200.0" text="Profile" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </bottom>
+    <left>
+        <AnchorPane prefHeight="446.0" prefWidth="107.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="LikesNum" layoutX="11.0" layoutY="14.0" prefHeight="23.0" prefWidth="82.0" text="Likes Num" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="commentNum" layoutX="11.0" layoutY="57.0" prefHeight="23.0" prefWidth="82.0" text="Comments Num" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="11.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+    </left>
+    <right>
+        <AnchorPane minWidth="8.0" prefHeight="136.0" prefWidth="8.0" BorderPane.alignment="CENTER" />
+    </right>
+    <top>
+        <AnchorPane prefHeight="364.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="postImage" fitHeight="339.0" fitWidth="400.0" layoutX="286.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+            <ImageView fx:id="profileImage" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="11.0">
+               <image>
+                  <Image url="@../../Images/person.png" />
+               </image></ImageView>
+            <Label fx:id="username" layoutX="133.0" layoutY="14.0" prefHeight="23.0" prefWidth="64.0" text="username:" AnchorPane.leftAnchor="133.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="userID" layoutX="133.0" layoutY="42.0" prefHeight="23.0" prefWidth="64.0" text="userID:" AnchorPane.leftAnchor="133.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="isBusiness" layoutX="133.0" layoutY="72.0" prefHeight="23.0" prefWidth="82.0" text="business acc" AnchorPane.leftAnchor="133.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TableView layoutX="35.0" layoutY="134.0" prefHeight="213.0" prefWidth="159.0">
+              <columns>
+                <TableColumn fx:id="likeUsers" prefWidth="75.0" text="Likes Users" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+        </AnchorPane>
+    </top>
+   <center>
+      <ScrollPane prefHeight="388.0" prefWidth="518.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="commentGroup" prefHeight="602.0" prefWidth="563.0" />
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

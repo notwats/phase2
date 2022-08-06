@@ -20,67 +20,21 @@ public class Post implements Comparable<Post> {
     Integer senderid;
 
     Boolean isNormal = true;
-    /*
-    int imageID;
-    int voiceID;
-    int audioID;
-     */
+
     int likeNumber;
 
     String context; // main for phase 1
 
     Date creationDate;
-    ArrayList<Comment> comments = new ArrayList<>();
-    ArrayList<User> likedUsers = new ArrayList<>();
+    ArrayList<Integer> commentsid = new ArrayList<>();
+    ArrayList<Integer> likedUsersid = new ArrayList<>();
 
-    public HashMap<Date, Integer> likesPerday = new HashMap<>();
-    public HashMap<Date, Integer> viewsPerday = new HashMap<>();
+
+    public ArrayList<Date> likesDate = new ArrayList<>();
+    public ArrayList<Date> viewsDate = new ArrayList<>();
+
+
     ArrayList<Tag> tags;
-
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(ArrayList<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public ArrayList<User> getLikedUsers() {
-        return likedUsers;
-    }
-
-    public void setLikedUsers(ArrayList<User> likedUsers) {
-        this.likedUsers = likedUsers;
-    }
-
-    public ArrayList<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(ArrayList<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public void forward() {
-    }
-
-    public void edit() {
-    }
-
-    public void reaction() {
-    }
-
-    public void view() {
-    }
-
-    public void delete() {
-    }
-
-    public void report() {
-    }
-
-    public void comment() {
-    }
 
 
     @Override
