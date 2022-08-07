@@ -32,7 +32,7 @@ import static project.Main.stage;
 
 public class UserProfile extends SceneController implements Initializable {
 
-   public static User currentProfile;
+   public static User currentProfile = loggedInUser ;
 
     public static void run() throws IOException {
         URL fxmlAddress = MainProfileView.class.getResource("user-profile.fxml");
@@ -103,8 +103,8 @@ public class UserProfile extends SceneController implements Initializable {
 
         userid.setText(currentProfile.getUserID());
         username.setText(currentProfile.getUsername());
-        followers.setText(String.valueOf(currentProfile.getFollowersID().size()));
-        followings.setText(String.valueOf(currentProfile.getFollowingsID().size()));
+        followers.setText("followers "+currentProfile.getFollowersID().size());
+        followings.setText("followers "+currentProfile.getFollowingsID().size());
         if (!currentProfile.getIsNormal()) {
             isBusiness.setText("Business account");
             //  viewLabel.setText(currentProfile.get);

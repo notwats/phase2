@@ -84,8 +84,8 @@ public class MainProfileView extends SceneController implements Initializable {
 
         userid.setText(loggedInUser.getUserID());
         username.setText(loggedInUser.getUsername());
-        followers.setText(String.valueOf(loggedInUser.getFollowersID().size()));
-        followings.setText(String.valueOf(loggedInUser.getFollowingsID().size()));
+        followers.setText("followers "+loggedInUser.getFollowersID().size());
+        followings.setText("followings "+loggedInUser.getFollowingsID().size());
         if (!loggedInUser.getIsNormal()) {
             isBusiness.setText("Business account");
             //   viewLabel.setText(loggedInUser.getV);

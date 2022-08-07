@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import project.SceneController;
 import project.controllers.MainSearchController;
 import project.controllers.UserProfileController;
@@ -23,7 +24,7 @@ import static project.Main.stage;
 public class Search extends SceneController {
 
     public static void run() throws IOException {
-        URL fxmlAddress = Search.class.getResource("search.fxml");
+        URL fxmlAddress = Search.class.getResource("searchView.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlAddress);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MainChatMenu");
@@ -48,11 +49,12 @@ public class Search extends SceneController {
         }
     }
 
-    void showUserProfile(ActionEvent event) throws IOException {
-        UserProfile.currentProfile = DBGetter.findUserByUserID(userID.getText());
-        UserProfile.run();
+    public void showUserProfile(MouseEvent mouseEvent) throws IOException {
+            UserProfile.currentProfile = DBGetter.findUserByUserID(userID.getText());
+            UserProfile.run();
+        }
     }
-}
+
 
 
 

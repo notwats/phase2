@@ -129,13 +129,15 @@ public class PostDB extends DBGetter {
     }
 
     public static Comment getCommentByCommentID(int commentID) {
-        Comment cc = null;
+        Comment cc = new Comment();
         try {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
             String query = "select * from comment where comment_id = " + commentID;
             ResultSet rs = st.executeQuery(query);
-
+            if (!rs.next()) {
+                return null;
+            }
             cc.setCommentID(rs.getInt(1));
             cc.setPostID(rs.getInt(2));
             cc.setSender(rs.getInt(3));
@@ -144,7 +146,6 @@ public class PostDB extends DBGetter {
             cc.setCommentText(rs.getString(6));
 
             con.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
