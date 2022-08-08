@@ -82,7 +82,7 @@ public class Comment {
 
         StringBuilder ret = new StringBuilder();
         if (repliedToID != null && repliedToID!=0) {
-            ret.append("in replied to " + PostDB.getCommentByCommentID(repliedToID).getCommentText() + "--");
+            ret.append("in replied to " + PostDB.getCommentByCommentID(repliedToID).getCommentText() + "--   " +"\n");
         }
         ret.append(DBGetter.findUserByUserNumberID(this.senderID).getUsername() + ": ");
         ret.append(commentText );

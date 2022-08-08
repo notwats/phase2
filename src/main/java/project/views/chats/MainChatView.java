@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import static project.Config.css;
+import static project.Config.imageAdd;
 import static project.Main.stage;
 
 public class MainChatView extends SceneController {
@@ -87,13 +88,13 @@ public class MainChatView extends SceneController {
                 if(chat.getUser1ID() == loggedInUser.getId()){
                     hbox.getChildren().add(new Label(DBGetter.findUserByUserNumberID(chat.getUser2ID()).getUsername()));
                     if(DBGetter.findUserByUserNumberID(chat.getUser2ID()).getProfileImage() != null){
-                        Image image = new Image(new File(DBGetter.findUserByUserNumberID(chat.getUser2ID()).getProfileImage()).toURI().toString()); // profile photo address
+                        Image image = new Image(imageAdd +DBGetter.findUserByUserNumberID(chat.getUser2ID()).getProfileImage()); // profile photo address
                          circle.setFill(new ImagePattern(image));
                     }
                 } else  if(chat.getUser2ID() == loggedInUser.getId()) {
                     hbox.getChildren().add(new Label(DBGetter.findUserByUserNumberID(chat.getUser1ID()).getUsername()));
                     if(DBGetter.findUserByUserNumberID(chat.getUser1ID()).getProfileImage() != null){
-                        Image image = new Image(new File(DBGetter.findUserByUserNumberID(chat.getUser1ID()).getProfileImage()).toURI().toString()); // profile photo address
+                        Image image = new Image(imageAdd +DBGetter.findUserByUserNumberID(chat.getUser1ID()).getProfileImage()); // profile photo address
                         circle.setFill(new ImagePattern(image));
                     }
                 }

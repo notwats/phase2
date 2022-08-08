@@ -15,7 +15,7 @@ public class GroupMessage {
     int senderID;
      public final int messageID;
     String messageText;
-    public int inReplyTo =0 ;
+    public int inReplyTo =-1 ;
     public Date date;
     public int forwardedFrom;
 
@@ -75,8 +75,12 @@ public class GroupMessage {
     @Override
     public String toString() {
         StringBuilder ret = new StringBuilder();
-        if ( inReplyTo!=0) {
-            ret.append("in replied to " + DBGetter.findMessageByMessageID(inReplyTo).getMessageText() + " --> ");
+        if (forwardedFrom!=-1){
+            ret.append("forwarded from " + DBGetter.findMessageByMessageID(forwardedFrom).getMessageText() + " <--    " + "\n");
+
+        }
+        if ( inReplyTo!=-1 && DBGetter.findMessageByMessageID(inReplyTo)!=null) {
+            ret.append("in replied to " + DBGetter.findMessageByMessageID(inReplyTo).getMessageText() + " -->     " +"\n");
         }
         ret.append(DBGetter.findUserByUserNumberID(this.senderID).getUsername() + ": ");
         ret.append(messageText );

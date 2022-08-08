@@ -6,6 +6,7 @@
 package project.database;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -215,5 +216,19 @@ public class UpdateDB {
         } catch (Exception var4) {
             var4.printStackTrace();
         }
+    }
+
+    public static void deleteGroupMessage(int messageID) {
+
+        try {
+            Connection con = DBInfo.getConnection();
+            Statement st = con.createStatement();
+            st.execute("delete from group_message where massage_id = " + messageID);
+            st.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

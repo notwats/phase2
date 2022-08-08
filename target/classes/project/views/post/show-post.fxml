@@ -108,6 +108,7 @@
               </columns>
             </TableView>
             <Label fx:id="caption" layoutX="298.0" layoutY="350.0" prefHeight="45.0" prefWidth="392.0" text="Caption:" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" />
+            <Button fx:id="stats" layoutX="215.0" layoutY="71.0" mnemonicParsing="false" onAction="#showStats" text="stats" />
          </children>
         </AnchorPane>
     </top>

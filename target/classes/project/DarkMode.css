@@ -13,7 +13,10 @@ VBox {
     -fx-background-color: #050723;
     -fx-border-color: #53d5e6;
 }
-
+HBox {
+    -fx-background-color: #050723;
+    -fx-border-color: #53d5e6;
+}
 Button {
     -fx-background-color: #1b0d6a;
     -fx-border-color: #7ed9e7;
@@ -43,4 +46,19 @@ body {
 .label {
     -fx-background-color: #050723;
     -fx-text-fill: #7ed9e7;
+}
+
+.text-field{
+    -fx-background-color: #050723;
+    -fx-border-color: #7ed9e7;
+    -fx-text-fill: #7ed9e7;
+    -fx-arc-height:50 ;
+    -fx-arc-width: 50;
+}
+.table-view{
+    -fx-background-color: #050723;
+    -fx-border-color: #7ed9e7;
+    -fx-text-fill: #7ed9e7;
+    -fx-arc-height:50 ;
+    -fx-arc-width: 50;
 }

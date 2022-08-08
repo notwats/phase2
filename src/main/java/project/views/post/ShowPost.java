@@ -87,6 +87,8 @@ public class ShowPost extends SceneController implements Initializable {
     @FXML
     private Label username;
 
+    @FXML
+    Button stats;
 
     @FXML
     private TableColumn<ViewReport, Integer> viewColumn;
@@ -112,16 +114,20 @@ public class ShowPost extends SceneController implements Initializable {
         if (loggedInUser.getNumberID() == sender.getNumberID()) {
             delete.setVisible(true);
             if (!loggedInUser.getIsNormal()) {
-                System.out.println("show post  "+ loggedInUser.getIsNormal());
+                System.out.println("show post  " + loggedInUser.getIsNormal());
                 dateColumn.setCellValueFactory(new PropertyValueFactory<>("eachDay")); // exact property you want to show of the student class
                 likeColumn.setCellValueFactory(new PropertyValueFactory<>("viewNum")); // exact property you want to show of the student class
                 viewColumn.setCellValueFactory(new PropertyValueFactory<>("likNum")); // exact property you want to show of the student class
-
+                stats.setVisible(true);
                 viewReportTable.setItems(getViews(ViewReport.sortByDay(currentPost.getViewsDate(), currentPost.getLikesDate(), currentPost.getCreationDate())));
+            } else {
+                viewReportTable.setVisible(false);
+                stats.setVisible(false);
             }
-else  viewReportTable.setVisible(false);
         } else {
             delete.setVisible(false);
+            viewReportTable.setVisible(false);
+            stats.setVisible(false);
         }
 
 
@@ -187,7 +193,7 @@ else  viewReportTable.setVisible(false);
             Circle circle = new Circle(10);
             User user = DBGetter.findUserByUserNumberID(cc.getSender());
             if (DBGetter.findUserByUserNumberID(cc.getSender()).getProfileImage() != null) {
-                Image image = new Image(imageAdd +user.getProfileImage());
+                Image image = new Image(imageAdd + user.getProfileImage());
                 circle.setFill(new ImagePattern(image));
             }
             Label text = new Label(cc.toString());
@@ -224,6 +230,11 @@ else  viewReportTable.setVisible(false);
                 commentGroup.getChildren().add(hBox);
             }
         }
+    }
+
+    public void showStats(ActionEvent event) throws IOException {
+        Stats.currentPost = currentPost;
+        Stats.run();
     }
 }
 

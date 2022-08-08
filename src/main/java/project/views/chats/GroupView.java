@@ -1,11 +1,14 @@
 package project.views.chats;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,6 +22,8 @@ import javafx.stage.FileChooser;
 import project.SceneController;
 import project.controllers.GroupController;
 import project.database.DBGetter;
+import project.database.PostDB;
+import project.database.UpdateDB;
 import project.models.Group;
 import project.models.GroupMessage;
 import project.models.User;
@@ -36,7 +41,7 @@ public class GroupView extends SceneController {
     public static User user;
     public static Group group;
     GroupController controller = new GroupController();
-
+    public static Integer repliedToID = -1;
     @FXML
     private TextField messageField;
 
@@ -63,7 +68,7 @@ public class GroupView extends SceneController {
         ArrayList<GroupMessage> messages = DBGetter.findGroupMessagesByGroupID(group.getGroupNumberID());
         chatBox.getChildren().clear();
         for (GroupMessage message : messages) {
-            if (message.inReplyTo == -1 && message.forwardedFrom == -1) {
+
                 Circle circle = new Circle(23);
                 User user = DBGetter.findUserByUserNumberID(message.getSenderID());
                 if (user.getProfileImage() != null) {
@@ -71,31 +76,53 @@ public class GroupView extends SceneController {
                     circle.setFill(new ImagePattern(image));
                 }
 
-                Label name= new Label(user.getUserID()+": ");
-                Label label = new Label(message.getMessageText());
-                HBox hBox = new HBox(circle,name, label);
-                chatBox.getChildren().add(hBox);
-            } else if (message.inReplyTo != -1) {
-                ///       || " the message that is replied to "
-                // ----
-                // |  |
-                // |  |   " this is the message that user sent"
-                // ----/ reply theme
+                Label text= new Label(message.toString());
+                Button btn = new Button();
+                btn.setText("reply");
+                btn.setOnAction(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        repliedToID = message.getMessageID();
+                    }
+                });
+                if (loggedInUser.getNumberID() == message.getSenderID() ) {
+                    Button deleteButt = new Button();
+                    deleteButt.setText("delete");
+                    deleteButt.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            UpdateDB.deleteGroupMessage(message.getMessageID());
 
-                Circle circle = new Circle(23);
-                GroupMessage inReplyTo = DBGetter.findMessageByMessageID(message.inReplyTo);
-                Label repliedLabel = new Label(inReplyTo.getMessageText());
-                HBox hBoxTop = new HBox(circle, repliedLabel);
-                // ---
-
-                Label label = new Label(message.getMessageText());
-                VBox vBox = new VBox(hBoxTop, label, new Label(message.date.toString()));
-
-                chatBox.getChildren().add(new HBox(new Circle(12), vBox));
-            } else {
-                // forward theme
-
-            }
+                            fillChatBox();
+                        }
+                    });
+                    HBox hBox = new HBox(circle, text, btn, deleteButt);
+                    chatBox.getChildren().add(hBox);
+                } else {
+                    HBox hBox = new HBox(circle, text, btn);
+                    chatBox.getChildren().add(hBox);
+                }
+//            } else if (message.inReplyTo != -1) {
+//                ///       || " the message that is replied to "
+//                // ----
+//                // |  |
+//                // |  |   " this is the message that user sent"
+//                // ----/ reply theme
+//
+//                Circle circle = new Circle(23);
+//                GroupMessage inReplyTo = DBGetter.findMessageByMessageID(message.inReplyTo);
+//                Label repliedLabel = new Label(inReplyTo.getMessageText());
+//                HBox hBoxTop = new HBox(circle, repliedLabel);
+//                // ---
+//
+//                Label label = new Label(message.getMessageText());
+//                VBox vBox = new VBox(hBoxTop, label, new Label(message.date.toString()));
+//
+//                chatBox.getChildren().add(new HBox(new Circle(12), vBox));
+//            } else {
+//                // forward theme
+//
+//            }
         }
     }
 
@@ -110,9 +137,10 @@ public class GroupView extends SceneController {
     @FXML
     public void sendMessage() {
         String message = messageField.getText();
-        if(!controller.handleSendMessage(message, loggedInUser.getId(), group.getGroupNumberID(), -1, -1)){
+        if(!controller.handleSendMessage(message, loggedInUser.getId(), group.getGroupNumberID(), -1,repliedToID )){
             banLabel.setText("you are banned");
         }
+        repliedToID=-1;
         fillChatBox();
     }
 
