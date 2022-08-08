@@ -176,7 +176,7 @@ public class UpdateDB {
 
     }
 
-    public static void messageCreationInGroup(String message, int senderID, int groupID, Date creationDate, int forwardedFromID, int repliedToID) {
+    public static void messageCreationInGroup(String message, int senderID, int groupID, int forwardedFromID, int repliedToID) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
@@ -194,13 +194,26 @@ public class UpdateDB {
     }
 
     public static void blockerBlocks(int blocker, int blocked) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
         try {
             Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-            statement.execute("INSERT INTO block_list( blocked_id, blocked_by_id )  VALUES( " + blocked + ", " + blocker + ") ;");
+            statement.execute("INSERT INTO block_list( blocked_id, blocked_by_id, block_date )  VALUES( " + blocked + ", " + blocker + " , '" + now.format(dtf) + "') ;");
         } catch (Exception var4) {
             var4.printStackTrace();
         }
 
+    }
+
+    public static void unblockerUnblocks(int unblocker, int unblocked) {
+        try {
+            Connection connection = DBInfo.getConnection();
+            Statement statement = connection.createStatement();
+            statement.execute("DELETE FROM block_list WHERE blocked_id = " + unblocked + " AND blocked_by_id = " + unblocker + " ;");
+        } catch (Exception var4) {
+            var4.printStackTrace();
+        }
     }
 }

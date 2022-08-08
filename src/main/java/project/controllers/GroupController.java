@@ -48,7 +48,7 @@ public class GroupController extends Controller{
         return "ID changed successfully";
     }
 
-    public boolean handleSendMessage(String message, int senderID, int groupNumberID, Date dateOfNow, int i, int inReplyTo) {
+    public boolean handleSendMessage(String message, int senderID, int groupNumberID, int i, int inReplyTo) {
         // ban check
         if(DBGetter.banCheck(groupNumberID, senderID)){
             System.out.println("you're banned from sending a message in this chat");
@@ -56,7 +56,7 @@ public class GroupController extends Controller{
         }
 
 
-        UpdateDB.messageCreationInGroup(message, senderID, groupNumberID, dateOfNow, i, inReplyTo );
+        UpdateDB.messageCreationInGroup(message, senderID, groupNumberID, i, inReplyTo );
         return true;
     }
 

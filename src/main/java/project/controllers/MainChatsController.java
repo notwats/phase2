@@ -36,24 +36,20 @@ public class MainChatsController  extends Controller{
         return "deleted successfully";
     }
 
-    public boolean handleEnteringGroup(Group group, int id) {
 
-
-        return DBGetter.checkMembership(id, group.getGroupNumberID());
-    }
-
-    public void handleCreatePrivateChat(String receiverID, int senderID) {
+    public String handleCreatePrivateChat(String receiverID, int senderID) {
         User receiver = DBGetter.findUserByUserID(receiverID);
         if(receiver == null){
-            System.out.println("the member id doesn't belong to any user");
-            return;
+            return "the member id doesn't belong to any user";
         }
+
         if(DBGetter.checkPrivateChat(receiver.getId(), senderID)){
-            System.out.println("you already have a chat with this user");
-            return;
+            return"you already have a chat with this user";
+
         }
 
         UpdateDB.createPrivateChat(receiver.getId(), senderID);
+        return "successfully created the chat";
     }
 
     public ArrayList<Personal> handleShowPrivateChats(int numberID) {

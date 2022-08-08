@@ -24,18 +24,33 @@ public class PrivateChatController {
         return true;
     }
 
-    public void handleBlockUser(int ID, String userID) {
+    public String handleBlockUser(int ID, String userID) {
         User newMember = DBGetter.findUserByUserID(userID);
         if(newMember == null){
-            System.out.println("the member id doesn't belong to any user");
-            return;
+           return "the member id doesn't belong to any user";
+
         }
         // check whether the member isn't already in the chat
         if(DBGetter.BlockedByBLocker(newMember.getId(), ID)){
-            System.out.println("user is already blocked");
-            return;
+            return "user is already blocked";
         }
 
         UpdateDB.blockerBlocks(ID, newMember.getId());
+        return "successfully blocked";
+    }
+
+    public String handleUnblockUser(int id, String userID) {
+        User newMember = DBGetter.findUserByUserID(userID);
+        if(newMember == null){
+            return "the member id doesn't belong to any user";
+
+        }
+        // check whether the member isn't already in the chat
+        if(!DBGetter.BlockedByBLocker(newMember.getId(), id)){
+            return "user isn't blocked";
+        }
+
+        UpdateDB.unblockerUnblocks(id, newMember.getId());
+        return "successfully unblocked";
     }
 }

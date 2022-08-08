@@ -362,7 +362,7 @@ user.setProfileImage(resultSet.getString("profile_image"));
         try {
             Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM private_message WHERE sender_id = " + id1 + " AND receiver_id = " + id2 + " ORDER BY creation_time");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM private_message WHERE sender_id = " + id1 + " AND receiver_id = " + id2);
 
             int senderID;
             int receiverID;

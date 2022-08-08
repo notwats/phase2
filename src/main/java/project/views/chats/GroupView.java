@@ -110,8 +110,7 @@ public class GroupView extends SceneController {
     @FXML
     public void sendMessage() {
         String message = messageField.getText();
-        Date dateOfNow = new Date();
-        if(!controller.handleSendMessage(message, loggedInUser.getId(), group.getGroupNumberID(), dateOfNow, -1, -1)){
+        if(!controller.handleSendMessage(message, loggedInUser.getId(), group.getGroupNumberID(), -1, -1)){
             banLabel.setText("you are banned");
         }
         fillChatBox();

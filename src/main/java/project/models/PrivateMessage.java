@@ -7,17 +7,17 @@ import java.util.Date;
 
 public class PrivateMessage {
     public final int messageID;
-    int firstUserID;
-    int secondUserID;
+    public int senderID;
+    public int receiverID;
     String messageText;
     public int inReplyTo;
     public Date date;
     public int forwardedFrom;
 
     public PrivateMessage(int firstUserID, int secondUserID, int messageID, String messageText, int inReplyTo, Date date, int forwardedFrom) {
-        this.firstUserID = firstUserID;
+        this.senderID = firstUserID;
         this.messageID = messageID;
-        this.secondUserID = secondUserID;
+        this.receiverID = secondUserID;
         this.messageText = messageText;
         this.inReplyTo = inReplyTo;
         this.date = date;

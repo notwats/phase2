@@ -35,7 +35,7 @@ public class ChatView extends SceneController {
     public static User user;
     public static User friend;
 
-    private PrivateChatController  controller = new PrivateChatController();
+    public static PrivateChatController  controller = new PrivateChatController();
     @FXML
     private Label blockLabel;
 
@@ -63,12 +63,20 @@ public class ChatView extends SceneController {
     private void fillChatBox(){
         ArrayList<PrivateMessage> messages = DBGetter.findPrivateMessagesWithBothMembersID(friend.getNumberID(), user.getNumberID());
 
+
         chatBox.getChildren().clear();
         for (PrivateMessage message : messages) {
             if (message.inReplyTo == -1 && message.forwardedFrom == -1) {
                 Circle circle = new Circle(10);
                 Label label = new Label(message.getMessageText());
-                HBox hBox = new HBox(circle, label);
+                User sender = DBGetter.findUserByUserNumberID(message.senderID);
+                Label senderName;
+                if(sender != null) {
+                    senderName = new Label(sender.getUsername() + " : ");
+                }else{
+                    senderName = new Label("deleted user") ;
+                }
+                HBox hBox = new HBox(circle,senderName, label);
                 chatBox.getChildren().add(hBox);
             } else if (message.inReplyTo != -1) {
                 // reply theme
@@ -104,5 +112,6 @@ public class ChatView extends SceneController {
         Date dateOfNow = new Date();
         if(!controller.handleSendMessage(message, user.getId(), friend.getId(), dateOfNow,-1, -1))
             blockLabel.setText("you are blocked");
+        fillChatBox();
     }
 }

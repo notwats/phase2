@@ -90,7 +90,7 @@
             </Label>
             <Button fx:id="uploadButton111" layoutX="571.0" layoutY="121.0" mnemonicParsing="false" onAction="#passwordButton" prefHeight="33.0" prefWidth="59.0" text="submit" AnchorPane.rightAnchor="14.0" />
             <ImageView fx:id="profileimage" fitHeight="204.0" fitWidth="251.0" layoutX="28.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true" />
-            <Button fx:id="uploadButton2" layoutX="357.0" layoutY="342.0" mnemonicParsing="false" onAction="#deleteAccButton" prefHeight="53.0" prefWidth="255.0" text="Delete Account" textFill="#cd0101">
+            <Button fx:id="uploadButton2" layoutX="357.0" layoutY="323.0" mnemonicParsing="false" onAction="#deleteAccButton" prefHeight="33.0" prefWidth="255.0" text="Delete Account" textFill="#cd0101">
                <font>
                   <Font size="18.0" />
                </font>
@@ -110,6 +110,11 @@
                </font>
             </Label>
             <Button fx:id="uploadButton11111" layoutX="571.0" layoutY="249.0" mnemonicParsing="false" onAction="#theme" prefHeight="33.0" prefWidth="59.0" text="submit" />
+            <Button fx:id="uploadButton21" layoutX="357.0" layoutY="383.0" mnemonicParsing="false" onAction="#logoutButton" prefHeight="32.0" prefWidth="255.0" text="Logout" textFill="#cd0101">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </center>

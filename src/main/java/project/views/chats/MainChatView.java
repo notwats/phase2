@@ -83,19 +83,28 @@ public class MainChatView extends SceneController {
                 //add prof image to
                 HBox hbox = new HBox();
                 Circle circle = new Circle(23);
-                //  Image image = new Image(new File("assassins-creed.jpg").toURI().toString()); // profile photo address
-                //  circle.setFill(new ImagePattern(image));
                 hbox.getChildren().add(circle);
-
                 if(chat.getUser1ID() == loggedInUser.getId()){
                     hbox.getChildren().add(new Label(DBGetter.findUserByUserNumberID(chat.getUser2ID()).getUsername()));
-                    ChatView.friend = DBGetter.findUserByUserNumberID(chat.getUser2ID());
+                    if(DBGetter.findUserByUserNumberID(chat.getUser2ID()).getProfileImage() != null){
+                        Image image = new Image(new File(DBGetter.findUserByUserNumberID(chat.getUser2ID()).getProfileImage()).toURI().toString()); // profile photo address
+                         circle.setFill(new ImagePattern(image));
+                    }
                 } else  if(chat.getUser2ID() == loggedInUser.getId()) {
                     hbox.getChildren().add(new Label(DBGetter.findUserByUserNumberID(chat.getUser1ID()).getUsername()));
-                    ChatView.friend = DBGetter.findUserByUserNumberID(chat.getUser1ID());
+                    if(DBGetter.findUserByUserNumberID(chat.getUser1ID()).getProfileImage() != null){
+                        Image image = new Image(new File(DBGetter.findUserByUserNumberID(chat.getUser1ID()).getProfileImage()).toURI().toString()); // profile photo address
+                        circle.setFill(new ImagePattern(image));
+                    }
                 }
+
                 hbox.setOnMouseClicked((e) ->{
                     ChatView.user = loggedInUser;
+                    if(chat.getUser1ID() == loggedInUser.getId()){
+                        ChatView.friend = DBGetter.findUserByUserNumberID(chat.getUser2ID());
+                    } else  if(chat.getUser2ID() == loggedInUser.getId()) {
+                        ChatView.friend = DBGetter.findUserByUserNumberID(chat.getUser1ID());
+                    }
                     try {
                         ChatView.run();
                     } catch (IOException ex) {
@@ -165,9 +174,9 @@ public class MainChatView extends SceneController {
     }
 
     public void addGroup(){
-        String groupId = userIdField.getText();
+        String groupId = groupIdField.getText();
         if(groupId.equals("")){
-            chatStatus.setText("there is no id");
+            groupStatus.setText("there is no id");
         }
 
 
@@ -176,6 +185,11 @@ public class MainChatView extends SceneController {
     }
 
     public void addPrivateChat(){
-
+        String receiverID = userIdField.getText();
+        if(receiverID.equals("")){
+            chatStatus.setText("there is no id");
+        }
+        chatStatus.setText(controller.handleCreatePrivateChat(receiverID, loggedInUser.getId()));
+        fillColumns();
     }
 }

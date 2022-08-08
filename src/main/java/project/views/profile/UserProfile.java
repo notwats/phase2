@@ -15,10 +15,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import project.Main;
 import project.SceneController;
+import project.controllers.PrivateChatController;
 import project.controllers.UserProfileController;
 import project.database.PostDB;
 import project.models.Post;
 import project.models.User;
+import project.views.chats.ChatView;
 import project.views.chats.MainChatView;
 import project.views.post.PostView;
 
@@ -62,6 +64,9 @@ public class UserProfile extends SceneController implements Initializable {
 
     @FXML
     private ScrollPane scrollPane;
+
+    @FXML
+    private Label blockStatus;
 
     @FXML
     private Label userid;
@@ -137,7 +142,11 @@ public class UserProfile extends SceneController implements Initializable {
     }
 
     public void blockButton(ActionEvent event) {
+        blockStatus.setText(ChatView.controller.handleBlockUser(loggedInUser.getId(), currentProfile.getUserID()));
+    }
 
+    public void unblockButton(ActionEvent actionEvent) {
+        blockStatus.setText(ChatView.controller.handleUnblockUser(loggedInUser.getId(), currentProfile.getUserID()));
     }
 }
 
