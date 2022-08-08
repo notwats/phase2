@@ -36,10 +36,10 @@ public class UserDB {
             Connection con = getConnection();
             String query = "update `user` set user_id = '" + user.getUserID() +
                     "', username = '"+ user.getUsername()+
-                    "', password = '" + user.getPassword()+
+                    "', password = '" + user.getPassword()+ "', profile_image = '"+user.getProfileImage() +"' where user_number_id = " +user.getNumberID()+
 //                    "', type = " +
 //                    ((user.getIsNormal()) ? "1" : "0")+
-                    "';";
+                    ";";
             // System.out.println(query);
             con.createStatement().execute(query);
             con.close();

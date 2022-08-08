@@ -29,7 +29,7 @@
                   <Image url="@../../Images/ic_love_.png" />
                </image>
             </ImageView>
-            <Label fx:id="caption" layoutX="172.0" layoutY="1.0" prefHeight="54.0" prefWidth="340.0" text="caption:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label fx:id="caption" layoutX="172.0" layoutY="1.0" onMouseClicked="#showPost" prefHeight="54.0" prefWidth="340.0" text="caption:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
    </bottom>

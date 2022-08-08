@@ -25,8 +25,8 @@ public class WelcomeController extends Controller {
     }
 
 
-    public Message handleRegistration(String userID ,String username , String password, String repeatedPassword, Integer questionNum, String answerS , Boolean isNormal) {
-        if (this.doesUsernameExist(username)) {
+    public static Message handleRegistration(String userID ,String username , String password, String repeatedPassword, Integer questionNum, String answerS , Boolean isNormal) {
+        if (doesUsernameExist(username)) {
             return Message.USER_EXIST;
         }
 
@@ -39,7 +39,7 @@ public class WelcomeController extends Controller {
     }
 
 
-    private Boolean doesUsernameExist(String userID) {
+    private static Boolean doesUsernameExist(String userID) {
         return DBGetter.findUserByUserID(userID) != null;
     }
 

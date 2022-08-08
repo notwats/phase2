@@ -6,6 +6,8 @@ public class Group extends Chat {
     String groupID;
     int groupAdminID;
 
+    String imageAdress;
+
     public int getGroupAdminNumberID() {
         return groupAdminID;
     }

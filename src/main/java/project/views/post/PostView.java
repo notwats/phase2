@@ -11,6 +11,7 @@ import project.Main;
 import project.database.PostDB;
 import project.models.Post;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -40,13 +41,13 @@ public class PostView {
         } else {
             currentPost.getLikedUsersid().add(loggedInUser.getNumberID());
             currentPost.setLikeNumber(currentPost.getLikedUsersid().size());
-            PostDB.addLike(currentPost.getPostID() , loggedInUser.getNumberID());
+            PostDB.addLike(currentPost.getPostID(), loggedInUser.getNumberID());
             System.out.println("liked");
         }
     }
 
     public void initialize(Post post) {
-        currentPost=post;
+        currentPost = post;
         caption.setText(post.getContext());
         if (!post.getIsNormal()) {
             adPost.setText("-------AD-------");
@@ -55,17 +56,17 @@ public class PostView {
 
         if (post.getImageAddress() == null) {
             imagePane.getChildren().remove(postImage);
-        }
-        else {
+        } else {
             //Image image= new Image(post.getImageAddress());
-           // System.out.println(post.getImageAddress());
-            Image image = new Image(imageAdd+post.getImageAddress());
+            // System.out.println(post.getImageAddress());
+            Image image = new Image(imageAdd + post.getImageAddress());
             postImage.setImage(image);
         }
     }
 
-    public void showPost(MouseEvent mouseEvent) {
-
+    public void showPost(MouseEvent mouseEvent) throws IOException {
+        ShowPost.currentPost = currentPost;
+        ShowPost.run();
     }
 }
 

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static project.Config.css;
 import static project.Main.stage;
 
 public class MainChatView extends SceneController {
@@ -58,7 +59,7 @@ public class MainChatView extends SceneController {
         URL fxmlAddress = MainChatView.class.getResource("main-chat-view.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlAddress);
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("MainChatMenu");
+        scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
     }
@@ -79,7 +80,7 @@ public class MainChatView extends SceneController {
         } else{
             chatLabel.setText("Chat");
             for(Personal chat: chats){
-                //add prof image toپ
+                //add prof image to
                 HBox hbox = new HBox();
                 Circle circle = new Circle(23);
                 //  Image image = new Image(new File("assassins-creed.jpg").toURI().toString()); // profile photo address
@@ -174,5 +175,7 @@ public class MainChatView extends SceneController {
         fillColumns();
     }
 
-    public void addPrivateChat(){}
+    public void addPrivateChat(){
+
+    }
 }

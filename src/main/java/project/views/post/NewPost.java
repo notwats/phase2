@@ -18,6 +18,7 @@ import project.models.Post;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Date;
 
 import static project.Config.css;
@@ -54,7 +55,7 @@ public class NewPost extends SceneController {
         post.setContext(postCaption.getText());
         post.setIsNormal(loggedInUser.getIsNormal());
         post.setSenderid(loggedInUser.getNumberID());
-        Date dateOfNow = new Date();
+        LocalDate dateOfNow = LocalDate.now();
         post.setCreationDate(dateOfNow);
         post.setImageAddress(imageAddress.getText());
         PostDB.addPost(post);

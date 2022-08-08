@@ -21,8 +21,6 @@ public class WelcomeView {
         stage.show();
     }
 
-    public WelcomeView(){}
-
     @FXML
     private void chooseLogin(ActionEvent event) {
         try {

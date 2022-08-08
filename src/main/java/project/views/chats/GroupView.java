@@ -9,8 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static project.Config.css;
+import static project.Config.imageAdd;
 import static project.Main.stage;
 
 public class GroupView extends SceneController {
@@ -62,8 +65,15 @@ public class GroupView extends SceneController {
         for (GroupMessage message : messages) {
             if (message.inReplyTo == -1 && message.forwardedFrom == -1) {
                 Circle circle = new Circle(23);
+                User user = DBGetter.findUserByUserNumberID(message.getSenderID());
+                if (user.getProfileImage() != null) {
+                    Image image = new Image(imageAdd +user.getProfileImage());
+                    circle.setFill(new ImagePattern(image));
+                }
+
+                Label name= new Label(user.getUserID()+": ");
                 Label label = new Label(message.getMessageText());
-                HBox hBox = new HBox(circle, label);
+                HBox hBox = new HBox(circle,name, label);
                 chatBox.getChildren().add(hBox);
             } else if (message.inReplyTo != -1) {
                 ///       || " the message that is replied to "

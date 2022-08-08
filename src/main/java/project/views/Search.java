@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.attribute.UserPrincipal;
 
+import static project.Config.css;
 import static project.Main.stage;
 
 public class Search extends SceneController {
@@ -27,7 +28,7 @@ public class Search extends SceneController {
         URL fxmlAddress = Search.class.getResource("searchView.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlAddress);
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("MainChatMenu");
+        scene.getStylesheets().add(css);
         stage.setScene(scene);
         stage.show();
     }
@@ -49,9 +50,8 @@ public class Search extends SceneController {
         }
     }
 
-    public void showUserProfile(MouseEvent mouseEvent) throws IOException {
-            UserProfile.currentProfile = DBGetter.findUserByUserID(userID.getText());
-            UserProfile.run();
+    public void showUserProfile(MouseEvent mouseEvent) {
+            super.showUserProfile(userID.getText());
         }
     }
 

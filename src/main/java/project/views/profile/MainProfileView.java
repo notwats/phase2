@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import project.Main;
 import project.SceneController;
+import project.database.PostDB;
 import project.models.Post;
 import project.views.post.PostView;
 
@@ -23,6 +24,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import static project.Config.imageAdd;
 import static project.Config.theme;
 import static project.Main.stage;
 
@@ -77,8 +79,11 @@ public class MainProfileView extends SceneController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (loggedInUser.getProfileImage() != null) {
-            Image profile = new Image(loggedInUser.getProfileImage());
+        loggedInUser.setPosts(PostDB.getPostByUserID(loggedInUser.getNumberID()));
+
+        if (loggedInUser.getProfileImage() != null && !loggedInUser.getProfileImage().equals("null")) {
+            System.out.println("main profile view "+ loggedInUser.getProfileImage() );
+            Image profile = new Image(imageAdd + loggedInUser.getProfileImage());
             profileImage.setImage(profile);
         }
 
@@ -96,7 +101,7 @@ public class MainProfileView extends SceneController implements Initializable {
         }
 
         System.out.println("profile view"+ loggedInUser.getPosts().size());
-        Collections.sort(loggedInUser.getPosts());
+
         for (Post post : loggedInUser.getPosts()) {
             FXMLLoader showpost = new FXMLLoader(PostView.class.getResource("post.fxml"));
             Node pane = null;

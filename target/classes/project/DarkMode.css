@@ -18,7 +18,6 @@ Button {
     -fx-background-color: #1b0d6a;
     -fx-border-color: #7ed9e7;
     -fx-text-fill: #7ed9e7;
-    -fx-font-size: 20px;
     -fx-arc-height:50 ;
     -fx-arc-width: 50;
 }
@@ -44,5 +43,4 @@ body {
 .label {
     -fx-background-color: #050723;
     -fx-text-fill: #7ed9e7;
-    -fx-font-size: 18px;
 }

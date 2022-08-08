@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.Date;
 public class PostDB extends DBGetter {
 
     public static Post getPostByPostID(Integer post_id) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Post ps = new Post();
         try {
             Connection connection = DBInfo.getConnection();
@@ -41,7 +43,8 @@ public class PostDB extends DBGetter {
             ps.setViewsDate(getViewsDate(ps.getPostID()));
             ps.setImageAddress(rs.getString("media"));
 
-            //           ps.setCreationDate(LocalDateTime.parse(rs.getString("creation_time")));
+            ps.setCreationDate(LocalDate.from(LocalDateTime.parse(rs.getString("creation_time"), formatter)));
+            System.out.println(ps.getCreationDate());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,7 +53,6 @@ public class PostDB extends DBGetter {
     }
 
     public static void addPost(Post post) {
-        // have to include time of sending the message too
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         try {
@@ -219,25 +221,20 @@ public class PostDB extends DBGetter {
     }
 
 
-    public static void deleteComment(Post post) {
+    public static void deleteComment(Integer commentid) {
         try {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
-            // post table
-            st.execute("update post set `text` = '" + post.getContext() + "' where post_id = " + post.getPostID() + ";");
-
-            //comment table
-            // post reaction table
-//another method
+            st.execute("delete from comment where comment_id = " + commentid);
+            st.close();
             con.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static void addLike(Integer postid, Integer reacterid) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         try {
             Connection con = DBInfo.getConnection();
@@ -270,15 +267,16 @@ public class PostDB extends DBGetter {
     }
 
 
-    public static ArrayList<Date> getLikesDate(Integer post_id) {
-        ArrayList<Date> ret = new ArrayList<>();
+    public static ArrayList<LocalDate> getLikesDate(Integer post_id) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ArrayList<LocalDate> ret = new ArrayList<>();
         try {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
             String query = "select * from post_reaction where post_id = " + post_id;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
-                ret.add(rs.getDate(3));
+                ret.add(LocalDate.from(LocalDateTime.parse(rs.getString(3), formatter)));
             }
             con.close();
         } catch (SQLException e) {
@@ -289,7 +287,7 @@ public class PostDB extends DBGetter {
 
     // ad post...
     public static void newView(Integer postid) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         try {
             Connection con = DBInfo.getConnection();
@@ -305,15 +303,16 @@ public class PostDB extends DBGetter {
     }
 
 
-    public static ArrayList<Date> getViewsDate(Integer post_id) {
-        ArrayList<Date> ret = new ArrayList<>();
+    public static ArrayList<LocalDate> getViewsDate(Integer post_id) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ArrayList<LocalDate> ret = new ArrayList<>();
         try {
             Connection con = DBInfo.getConnection();
             Statement st = con.createStatement();
             String query = "select * from post_view where post_id = " + post_id;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
-                ret.add(rs.getDate(2));
+                ret.add(LocalDate.from(LocalDateTime.parse(rs.getString(2), formatter)));
             }
             con.close();
         } catch (SQLException e) {

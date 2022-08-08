@@ -41,7 +41,6 @@ public class Explore extends SceneController implements Initializable {
 
         ArrayList<Post> allFollowingsPosts = PostDB.getFollowingsPost(loggedInUser.getNumberID());
 
-        Collections.sort(allFollowingsPosts);
         for (Post post : allFollowingsPosts) {
             FXMLLoader showpost = new FXMLLoader(PostView.class.getResource("post.fxml"));
             Node pane = null;

@@ -1,17 +1,21 @@
 package project.models;
 
+import lombok.Getter;
+import lombok.Setter;
 import project.database.DBGetter;
+import project.database.PostDB;
 import project.database.UpdateDB;
 
 import java.util.Date;
-
+@Getter
+@Setter
 public class GroupMessage {
     public int groupNumberID;
     int receiverID;
     int senderID;
      public final int messageID;
     String messageText;
-    public int inReplyTo;
+    public int inReplyTo =0 ;
     public Date date;
     public int forwardedFrom;
 
@@ -67,4 +71,17 @@ public class GroupMessage {
 
     //public void pin(){}
 
+
+    @Override
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        if ( inReplyTo!=0) {
+            ret.append("in replied to " + DBGetter.findMessageByMessageID(inReplyTo).getMessageText() + " --> ");
+        }
+        ret.append(DBGetter.findUserByUserNumberID(this.senderID).getUsername() + ": ");
+        ret.append(messageText );
+        //  ret.append(likeNumber + " user like this comment");
+
+        return ret.toString();
+    }
 }

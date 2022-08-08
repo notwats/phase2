@@ -9,7 +9,7 @@ public class Comment {
     Integer postID;
     Integer senderID;
     int likeNumber;
-    Integer repliedToID = null; // nothing default
+    Integer repliedToID = 0; // nothing default
     //------
     String commentText;
 
@@ -81,13 +81,13 @@ public class Comment {
     public String toString() {
 
         StringBuilder ret = new StringBuilder();
-        if (repliedToID != null) {
-            ret.append("in replied to " + PostDB.getCommentByCommentID(repliedToID).getCommentText() + "\n");
+        if (repliedToID != null && repliedToID!=0) {
+            ret.append("in replied to " + PostDB.getCommentByCommentID(repliedToID).getCommentText() + "--");
         }
-        ret.append(DBGetter.findUserByUserNumberID(this.senderID).getUsername() + " : \n");
-        ret.append(commentText + "\n");
+        ret.append(DBGetter.findUserByUserNumberID(this.senderID).getUsername() + ": ");
+        ret.append(commentText );
 
-        ret.append(likeNumber + " user like this comment");
+      //  ret.append(likeNumber + " user like this comment");
 
         return ret.toString();
     }

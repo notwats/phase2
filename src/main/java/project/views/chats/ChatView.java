@@ -21,6 +21,7 @@ import project.models.Group;
 import project.models.GroupMessage;
 import project.models.PrivateMessage;
 import project.models.User;
+import project.views.profile.UserProfile;
 
 import java.io.IOException;
 import java.net.URL;
@@ -93,8 +94,9 @@ public class ChatView extends SceneController {
         }
     }
 
-    public void checkProfile() {
-
+    public void checkProfile() throws IOException {
+        UserProfile.currentProfile = DBGetter.findUserByUserID(friend.getUserID());
+        UserProfile.run();
     }
 
     public void sendMessage(ActionEvent actionEvent) {

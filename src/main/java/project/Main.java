@@ -34,8 +34,8 @@ public class Main extends Application {
                 stage.setScene(scene);
                 stage.setTitle("NotWot");
                 stage.show();
-              //  WelcomeView.run();
-                loggedInUser= DBGetter.findUserByUserID("mohsenam1");
-                NewPost.run();
+                WelcomeView.run();
+            //    loggedInUser= DBGetter.findUserByUserID("ghlmu");
+            //    NewPost.run();
         }
 }

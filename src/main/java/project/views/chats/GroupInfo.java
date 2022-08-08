@@ -7,15 +7,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import org.w3c.dom.Text;
 import project.SceneController;
 import project.controllers.GroupController;
 import project.database.DBGetter;
+import project.database.UserDB;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 import static project.Config.css;
+import static project.Config.imageAdd;
 import static project.Main.stage;
 import static project.views.chats.GroupView.group;
 import static project.views.chats.GroupView.user;
@@ -40,6 +46,12 @@ public class GroupInfo extends SceneController {
 
     @FXML
     private TextField groupInfoField;
+
+    @FXML
+    private ImageView profileimage;
+
+    @FXML
+    private Label imageAddress;
 
     public static void run() throws IOException {
         URL fxmlAddress = GroupInfo.class.getResource("group-info.fxml");
@@ -133,5 +145,25 @@ public class GroupInfo extends SceneController {
     public void leaveGroup(ActionEvent actionEvent) throws IOException{
         controller.handleLeaveGroup(group, loggedInUser.getId());
         MainChatView.run();
+    }
+
+    public void submitProfile(ActionEvent event) {
+
+
+    }
+    @FXML
+    void uploadImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("photo");
+        fileChooser.setInitialDirectory(new File(imageAdd));
+        File file = fileChooser.showOpenDialog(null);
+        String imagePath = file.getAbsolutePath();
+        String imageName = imagePath.split("Images\\\\")[1];
+        imageAddress.setText(imageName);
+        System.out.println(imagePath);
+        // System.out.println(Main.class.getResourceAsStream("Images\\"+imageName) );
+        Image image = new Image(imageAdd + imageName);
+        // Image image = new Image(imagePath);
+        profileimage.setImage(image);
     }
 }

@@ -3,6 +3,7 @@ package project.models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import lombok.Getter;
@@ -48,6 +49,7 @@ public class User {
     String Bio;
 
 //    private static int mainID = 0;
+public User(){}
 
     public User(Integer userNumberId, String userID, String username, String password, String securityAnswer, Integer securityQuestion, int type) {
 
@@ -109,6 +111,7 @@ public class User {
     }
 
     public ArrayList<Post> getPosts() {
+        Collections.sort(posts);
         return posts;
     }
 

@@ -25,12 +25,12 @@ public class Post implements Comparable<Post> {
 
     String context; // main for phase 1
 
-    Date creationDate;
+    LocalDate creationDate;
     ArrayList<Integer> commentsid = new ArrayList<>();
     ArrayList<Integer> likedUsersid = new ArrayList<>();
 
-    public ArrayList<Date> likesDate = new ArrayList<>();
-    public ArrayList<Date> viewsDate = new ArrayList<>();
+    public ArrayList<LocalDate> likesDate = new ArrayList<>();
+    public ArrayList<LocalDate> viewsDate = new ArrayList<>();
 
 
     ArrayList<Tag> tags;

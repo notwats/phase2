@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import static project.Config.imageAdd;
 import static project.Config.theme;
 import static project.Main.stage;
 
@@ -79,20 +80,15 @@ public class UserProfile extends SceneController implements Initializable {
         UserProfileController.followHandle(currentProfile);
     }
 
-    @FXML
-    void message(ActionEvent event) throws IOException {
-        MainChatView.run();
-    }
-
     private boolean isFollower() {
         return currentProfile.getFollowersID().contains(loggedInUser.getId());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        viewLabel.setVisible(false);
         if (currentProfile.getProfileImage() != null) {
-            Image profile = new Image(currentProfile.getProfileImage());
+            Image profile = new Image(imageAdd + currentProfile.getProfileImage());
             profileImage.setImage(profile);
         }
 
@@ -108,7 +104,8 @@ public class UserProfile extends SceneController implements Initializable {
         if (!currentProfile.getIsNormal()) {
             isBusiness.setText("Business account");
             //  viewLabel.setText(currentProfile.get);
-            viewLabel.setVisible(false);
+            if (currentProfile.getNumberID()== loggedInUser.getNumberID())
+            viewLabel.setVisible(true);
         } else {
             isBusiness.setVisible(false);
             viewLabel.setVisible(false);
@@ -131,6 +128,16 @@ public class UserProfile extends SceneController implements Initializable {
             postGroup.getChildren().add(pane);
             System.out.println(postGroup.getChildren().size());
         }
+    }
+
+
+    @FXML
+    void message(ActionEvent event) throws IOException {
+        MainChatView.run();
+    }
+
+    public void blockButton(ActionEvent event) {
+
     }
 }
 
