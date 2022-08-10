@@ -151,7 +151,7 @@ user.setProfileImage(resultSet.getString("profile_image"));
         try {
             Connection connection = DBInfo.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM group_message WHERE group_id = " + groupID + " ORDER BY creation_time");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM group_message WHERE group_id = " + groupID + " ORDER BY creation_date");
 
             while(resultSet.next()) {
                 int senderID = Integer.parseInt(resultSet.getString("sender_id"));
@@ -170,7 +170,7 @@ user.setProfileImage(resultSet.getString("profile_image"));
                     forwardedFrom = -1;
                 }
 
-                Date creationDate = resultSet.getDate("creation_time");
+                Date creationDate = resultSet.getDate("creation_date");
                 GroupMessage newMessage = new GroupMessage(groupID, senderID, messageID, resultSet.getString("text"), inReplyTo, creationDate, forwardedFrom);
                 messages.add(newMessage);
             }

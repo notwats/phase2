@@ -186,13 +186,14 @@ public class UpdateDB {
             if (forwardedFromID == -1 && repliedToID == -1) {
                 con.createStatement().execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, is_replied)  VALUES( " + senderID + " , " + groupID + " , '" + message + "', '" + now.format(dtf) + "' , FALSE)");
             } else {
-                con.createStatement().execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( " + senderID + "," + groupID + "," + message + "," + senderID + ",'" + now.format(dtf) + "'," + groupID + "," + forwardedFromID + "," + repliedToID + ", true)");
+                con.createStatement().execute("INSERT INTO group_message( sender_id, group_id, text, creation_time, forwarded_from, replied_to, is_replied)  VALUES( " + senderID + "," + groupID + ",'" + message + "','" + now.format(dtf) + "'," + forwardedFromID + "," + repliedToID + ", true)");
             }
         } catch (Exception var9) {
             var9.printStackTrace();
         }
 
     }
+
 
     public static void blockerBlocks(int blocker, int blocked) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

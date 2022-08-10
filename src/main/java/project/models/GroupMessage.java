@@ -75,9 +75,8 @@ public class GroupMessage {
     @Override
     public String toString() {
         StringBuilder ret = new StringBuilder();
-        if (forwardedFrom!=-1){
+        if (forwardedFrom!=-1 && DBGetter.findMessageByMessageID(forwardedFrom)!=null){
             ret.append("forwarded from " + DBGetter.findMessageByMessageID(forwardedFrom).getMessageText() + " <--    " + "\n");
-
         }
         if ( inReplyTo!=-1 && DBGetter.findMessageByMessageID(inReplyTo)!=null) {
             ret.append("in replied to " + DBGetter.findMessageByMessageID(inReplyTo).getMessageText() + " -->     " +"\n");
